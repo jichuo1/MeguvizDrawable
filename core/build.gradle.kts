@@ -15,7 +15,7 @@ tasks.withType<JavaCompile>().configureEach {
 val contractTest = tasks.register<JavaExec>("contractTest") {
     dependsOn(tasks.testClasses)
     classpath = sourceSets.test.get().runtimeClasspath
-    mainClass = "dev.meguviz.drawable.core.CoreContractTest"
+    mainClass = "io.github.jichuo1.meguviz.drawable.core.CoreContractTest"
 }
 
 // The current suite is an executable Java program, not a test-framework suite.

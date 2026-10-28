@@ -1,4 +1,4 @@
-package dev.meguviz.drawable.model;
+package io.github.jichuo1.meguviz.drawable.model;
 
 import java.util.Arrays;
 

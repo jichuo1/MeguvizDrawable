@@ -1,6 +1,6 @@
 # 验证记录
 
-2026-10-28，JDK 17、Gradle 9.8.2：`gradlew --offline --no-daemon check --rerun-tasks`，退出码 0，重新编译后执行 `CoreContractTest`，20,018 项检查通过。范围仅包括状态匹配、输入复制和圆角约束。
+2026-10-28，基线提交 `4c5dd54`，JDK 17、Gradle 9.8.2：`gradlew --offline --no-daemon check --rerun-tasks`，退出码 0，重新编译后执行 `CoreContractTest`，20,018 项检查通过。范围仅包括当时的状态匹配、输入复制和圆角约束；后续包名迁移及新增代码尚未验证。
 
 初次 `check` 时合同测试通过，但默认 Gradle `test` 任务因没有测试框架用例而失败。构建随后改为禁用该默认任务，由 `check` 显式依赖可执行的合同测试；上述重跑包含修正后的接线。另一次在受限环境运行时 wrapper 缓存锁文件访问被拒绝，使用已有缓存权限重跑成功。
 

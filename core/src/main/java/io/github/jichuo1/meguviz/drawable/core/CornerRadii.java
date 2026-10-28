@@ -1,4 +1,4 @@
-package dev.meguviz.drawable.core;
+package io.github.jichuo1.meguviz.drawable.core;
 
 /** Normalizes TL, TR, BR, BL x/y radii using one common scale. */
 public final class CornerRadii {

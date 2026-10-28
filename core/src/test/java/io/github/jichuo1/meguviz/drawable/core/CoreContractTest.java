@@ -1,7 +1,7 @@
-package dev.meguviz.drawable.core;
+package io.github.jichuo1.meguviz.drawable.core;
 
-import dev.meguviz.drawable.model.StateColorList;
-import dev.meguviz.drawable.model.StateSpec;
+import io.github.jichuo1.meguviz.drawable.model.StateColorList;
+import io.github.jichuo1.meguviz.drawable.model.StateSpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;

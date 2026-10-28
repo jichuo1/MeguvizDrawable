@@ -1,7 +1,7 @@
-package dev.meguviz.drawable.core;
+package io.github.jichuo1.meguviz.drawable.core;
 
-import dev.meguviz.drawable.model.StateSpec;
-import dev.meguviz.drawable.model.StateColorList;
+import io.github.jichuo1.meguviz.drawable.model.StateSpec;
+import io.github.jichuo1.meguviz.drawable.model.StateColorList;
 
 /** Direct state matching; no assumptions are made about the number or magnitude of IDs. */
 public final class StateMatcher {
