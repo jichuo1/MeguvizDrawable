@@ -70,6 +70,13 @@ public final class ContractInstrumentation extends Instrumentation {
                 finish(Activity.RESULT_OK, result);
                 return;
             }
+            if ("binding".equals(mode)) {
+                checks = BindingContract.run(this);
+                result.putString("stream", "\nBINDING PASS checks=" + checks + "\n");
+                result.putInt("checks", checks);
+                finish(Activity.RESULT_OK, result);
+                return;
+            }
             shapesAndGradient();
             statesAndIsolation();
             reusedStateArrayAndDistinctKeys();

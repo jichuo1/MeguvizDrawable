@@ -16,6 +16,7 @@ public final class CoreContractTest {
         geometry();
         checks += CoreAdditionalContractTest.run();
         checks += BindingContractTest.run();
+        checks += ProviderExtensionContractTest.run();
         System.out.println("CoreContractTest: " + checks + " checks passed");
     }
 

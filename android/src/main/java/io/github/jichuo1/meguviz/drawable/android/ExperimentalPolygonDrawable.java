@@ -12,7 +12,9 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
+import io.github.jichuo1.meguviz.drawable.spi.ShapeCapabilities;
 import io.github.jichuo1.meguviz.drawable.spi.ShapePlanView;
+import io.github.jichuo1.meguviz.drawable.spi.ShapeProviderRegistry;
 
 /**
  * Experimental software-capable polygon adapter. Each instance owns its Path
@@ -27,6 +29,16 @@ public final class ExperimentalPolygonDrawable extends Drawable {
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int alpha = 255;
     private boolean hasGeometry;
+
+    /**
+     * A registry builder that already offers what this drawable provides
+     * ({@link ShapeCapabilities#CANVAS_SOFTWARE}), so providers requiring it are
+     * supported and providers requiring anything else take their fallbacks.
+     */
+    public static ShapeProviderRegistry.Builder registryBuilder(int maxProviders, int maxVerticesPerPlan) {
+        return new ShapeProviderRegistry.Builder(maxProviders, maxVerticesPerPlan)
+                .offer(ShapeCapabilities.CANVAS_SOFTWARE);
+    }
 
     public ExperimentalPolygonDrawable(ShapePlanView plan, int color) {
         if (plan == null) throw new NullPointerException("plan");
