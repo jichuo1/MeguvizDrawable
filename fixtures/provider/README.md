@@ -30,7 +30,12 @@ gradlew --offline -p fixtures/provider :provider:check :app:verifyCandidateResol
 gradlew --offline -p fixtures/provider -Pprovider.metadata=pom :provider:check :app:verifyCandidateResolution
 ```
 
-The provider contract exercises the separately resolved core artifact. The
-instrumentation test exercises real Android software Canvas pixels and owner
-isolation, if built and run on a device. Release enables R8. These are fixtures,
-not public releases or a claim that RecipeDrawable supports arbitrary paths.
+The provider contract exercises the separately resolved core artifact. Default
+instrumentation exercises Android software Canvas pixels and owner isolation.
+Its direct references to library classes are not suitable for an obfuscated
+R8 target: that attempted test failed with `NoClassDefFoundError`. The separate
+`-e mode blackbox` path uses Android platform APIs and checks four displayed
+pixels of the debug-signed R8 application without adding keep rules. It is a
+limited device check, not a replacement for the default contract suite. These
+are fixtures, not public releases or a claim that RecipeDrawable supports
+arbitrary paths.

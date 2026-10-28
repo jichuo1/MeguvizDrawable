@@ -18,10 +18,16 @@ import java.util.Collections;
 
 /** Independent provider Android behavior, using staged candidate artifacts. */
 public final class ProviderInstrumentation extends Instrumentation {
-    @Override public void onCreate(Bundle args) { super.onCreate(args); start(); }
+    private String mode;
+    @Override public void onCreate(Bundle args) { super.onCreate(args); mode = args.getString("mode", "provider"); start(); }
     @Override public void onStart() {
         Bundle result = new Bundle();
         try {
+            if ("blackbox".equals(mode)) {
+                result.putString("stream", BlackBoxInstrumentation.run(this));
+                finish(Activity.RESULT_OK, result);
+                return;
+            }
             String id = "example.provider.cutcorner";
             ShapeProviderDescriptor d = new ShapeProviderDescriptor(id, 1, 1, "1", 8, Collections.<String>emptyList());
             ShapePlanView plan = new ShapeProviderRegistry.Builder(1, 8)
@@ -48,7 +54,8 @@ public final class ProviderInstrumentation extends Instrumentation {
             result.putString("stream", "\nPROVIDER PASS: cut geometry, software Canvas, owner isolation, tint rejection\n");
             finish(Activity.RESULT_OK, result);
         } catch (Throwable error) {
-            result.putString("stream", "\nPROVIDER FAIL: " + error + "\n" + android.util.Log.getStackTraceString(error));
+            result.putString("stream", "\n" + ("blackbox".equals(mode) ? "BLACKBOX" : "PROVIDER")
+                    + " FAIL: " + error + "\n" + android.util.Log.getStackTraceString(error));
             finish(Activity.RESULT_CANCELED, result);
         }
     }
