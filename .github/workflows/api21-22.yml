@@ -28,9 +28,15 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p verification/api
-          bash gradlew -Pmeguviz.profile=android --no-daemon :android:assembleDebugAndroidTest 2>&1 | tee verification/api/build.log
-          sha256sum android/build/outputs/apk/androidTest/debug/android-debug-androidTest.apk > verification/api/apk.sha256
-          find core/src/main android/src/main android/src/androidTest -type f -print0 | sort -z | xargs -0 sha256sum > verification/api/sources.sha256
+          bash gradlew -Pmeguviz.profile=android --no-daemon :android:assembleDebugAndroidTest :core:publishCandidatePublicationToStagingRepository :android:publishCandidatePublicationToStagingRepository 2>&1 | tee verification/api/build.log
+          bash gradlew -p fixtures/provider --init-script "$GITHUB_WORKSPACE/tools/verify-provider-debug.init.gradle" --no-daemon :provider:check :app:verifyCandidateResolution :app:verifyDebugCandidateResolution :app:assembleDebug :app:assembleDebugAndroidTest 2>&1 | tee verification/api/provider-build.log
+          bash gradlew -p fixtures/provider --no-daemon :app:dependencies --configuration debugRuntimeClasspath 2>&1 | tee verification/api/provider-debug-dependencies.log
+          cp android/build/outputs/apk/androidTest/debug/android-debug-androidTest.apk verification/api/core-test.apk
+          cp fixtures/provider/app/build/outputs/apk/debug/app-debug.apk verification/api/provider-app.apk
+          cp fixtures/provider/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk verification/api/provider-test.apk
+          sha256sum verification/api/core-test.apk verification/api/provider-app.apk verification/api/provider-test.apk > verification/api/apks.sha256
+          find build/staging-maven/io/github/jichuo1/meguviz -type f \( -name '*.jar' -o -name '*.aar' -o -name '*.pom' -o -name '*.module' \) -print0 | sort -z | xargs -0 sha256sum > verification/api/staging.sha256
+          find core/src/main android/src/main android/src/androidTest fixtures/provider/provider/src fixtures/provider/app/src -type f -print0 | sort -z | xargs -0 sha256sum > verification/api/sources.sha256
           git rev-parse HEAD > verification/api/head.txt
       - name: Enable KVM for this hosted runner
         run: |

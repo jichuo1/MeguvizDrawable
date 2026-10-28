@@ -16,11 +16,11 @@ final class HardwareCaptureApi26 {
     private HardwareCaptureApi26() {}
 
     static Bitmap capture(final HardwareProbeActivity activity) throws InterruptedException {
-        final Bitmap result = Bitmap.createBitmap(220, 100, Bitmap.Config.ARGB_8888);
+        final Bitmap result = Bitmap.createBitmap(220, 400, Bitmap.Config.ARGB_8888);
         final CountDownLatch completed = new CountDownLatch(1);
         final int[] status = {-1};
         final Rect region = new Rect(activity.windowX, activity.windowY,
-                activity.windowX + 220, activity.windowY + 100);
+                activity.windowX + 220, activity.windowY + 400);
         PixelCopy.request(activity.getWindow(), region, result, new PixelCopy.OnPixelCopyFinishedListener() {
             @Override public void onPixelCopyFinished(int code) {
                 status[0] = code;

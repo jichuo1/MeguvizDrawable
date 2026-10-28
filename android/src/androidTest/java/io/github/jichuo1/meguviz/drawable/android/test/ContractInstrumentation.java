@@ -21,6 +21,9 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import io.github.jichuo1.meguviz.drawable.android.RecipeDrawable;
@@ -62,7 +65,11 @@ public final class ContractInstrumentation extends Instrumentation {
             asymmetricGeometryReference();
             statefulTintAndOwnership();
             boundsAndMetricsEdges();
-            if ("hardware".equals(mode)) hardwareCanvasReference();
+            if ("hardware".equals(mode)) {
+                hardwareCanvasReference();
+                result.putString("hardware_scenes", "gradient=6084; asymmetric_round_rect=6400; "
+                        + "checked_alpha128=6400; selected_alpha255=6400; exact_pixel_matches");
+            }
             result.putString("stream", "\nCONTRACT PASS checks=" + checks + "\n");
             result.putInt("checks", checks);
             finish(Activity.RESULT_OK, result);
@@ -297,50 +304,89 @@ public final class ContractInstrumentation extends Instrumentation {
         try {
             check(activity.drawn.await(10, TimeUnit.SECONDS), "hardware fixture draw completed");
             check(activity.hardwareCanvas, "fixture Canvas is hardware accelerated");
-            check(activity.viewWidth >= 220 && activity.viewHeight >= 100, "hardware fixture is visible");
+            check(activity.viewWidth >= 220 && activity.viewHeight >= 400, "hardware fixture is visible");
             waitForIdleSync();
             boolean matched = false;
-            int lastDifferences = -1;
-            int lastActual = 0;
-            int lastExpected = 0;
-            int lastX = -1, lastY = -1, lastMaxDelta = 0;
+            boolean visible = false;
+            HardwareDifference gradient = null, rounded = null, checked = null, selected = null;
+            String failureImage = "not captured";
             // onDraw may precede display presentation; bound the wait and inspect only our fixture.
             for (int attempt = 0; attempt < 30 && !matched; attempt++) {
                 Bitmap screenshot = HardwareCaptureApi26.capture(activity);
                 if (screenshot != null) {
-                    int differences = 0;
-                    int maxDelta = 0;
-                    for (int y = 21; y < 99; y++) {
-                        for (int x = 21; x < 99; x++) {
-                            int actual = screenshot.getPixel(x, y);
-                            int expected = screenshot.getPixel(x + 120, y);
-                            if (actual != expected) {
-                                if (differences == 0) {
-                                    lastActual = actual; lastExpected = expected; lastX = x; lastY = y;
-                                }
-                                maxDelta = Math.max(maxDelta, Math.abs(Color.alpha(actual) - Color.alpha(expected)));
-                                maxDelta = Math.max(maxDelta, Math.abs(Color.red(actual) - Color.red(expected)));
-                                maxDelta = Math.max(maxDelta, Math.abs(Color.green(actual) - Color.green(expected)));
-                                maxDelta = Math.max(maxDelta, Math.abs(Color.blue(actual) - Color.blue(expected)));
-                                differences++;
-                            }
-                        }
-                    }
-                    lastDifferences = differences;
-                    lastMaxDelta = maxDelta;
-                    // Prevent an undrawn, uniformly white screen from passing the comparison.
-                    matched = differences == 0
-                            && screenshot.getPixel(22, 50) != Color.WHITE;
+                    // Keep the original gradient comparison region; other scenes include their edges.
+                    gradient = compareHardwarePixels(screenshot, 21, 21, 99, 99);
+                    rounded = compareHardwarePixels(screenshot, 20, 120, 100, 200);
+                    checked = compareHardwarePixels(screenshot, 20, 220, 100, 300);
+                    selected = compareHardwarePixels(screenshot, 20, 320, 100, 400);
+                    int leftGradient = screenshot.getPixel(22, 50);
+                    int rightGradient = screenshot.getPixel(98, 50);
+                    int roundCenter = screenshot.getPixel(60, 160);
+                    int checkedCenter = screenshot.getPixel(60, 260);
+                    int selectedCenter = screenshot.getPixel(60, 360);
+                    // Require real drawn colors, not an equally blank or black pair of panels.
+                    visible = Color.red(leftGradient) > 100 && Color.blue(rightGradient) > 100
+                            && Color.blue(roundCenter) > Color.red(roundCenter)
+                            && Color.red(checkedCenter) > Color.green(checkedCenter) + 40
+                            && Color.blue(selectedCenter) > Color.red(selectedCenter) + 100;
+                    matched = gradient.count == 0 && rounded.count == 0 && checked.count == 0
+                            && selected.count == 0 && visible;
+                    if (!matched && attempt == 29) failureImage = saveHardwareFailure(activity, screenshot);
                     screenshot.recycle();
                 }
                 if (!matched) Thread.sleep(100);
             }
-            check(matched, "hardware screenshot matches platform shader reference: differences="
-                    + lastDifferences + " first=" + Integer.toHexString(lastActual)
-                    + "/" + Integer.toHexString(lastExpected) + " x=" + lastX + " y=" + lastY
-                    + " max_channel_delta=" + lastMaxDelta);
+            check(gradient != null && gradient.count == 0,
+                    "hardware gradient differs: " + gradient + " failure image=" + failureImage);
+            check(rounded != null && rounded.count == 0,
+                    "hardware asymmetric round rect differs: " + rounded + " failure image=" + failureImage);
+            check(checked != null && checked.count == 0,
+                    "hardware checked alpha differs: " + checked + " failure image=" + failureImage);
+            check(selected != null && selected.count == 0,
+                    "hardware selected color differs: " + selected + " failure image=" + failureImage);
+            check(visible, "hardware fixture produced no expected color signals; failure image=" + failureImage);
         } finally {
             runOnMainSync(new Runnable() { @Override public void run() { activity.finish(); } });
+        }
+    }
+
+    private static HardwareDifference compareHardwarePixels(Bitmap image, int left, int top, int right, int bottom) {
+        HardwareDifference result = new HardwareDifference();
+        for (int y = top; y < bottom; y++) {
+            for (int x = left; x < right; x++) {
+                int actual = image.getPixel(x, y);
+                int expected = image.getPixel(x + 120, y);
+                if (actual == expected) continue;
+                if (result.count++ == 0) {
+                    result.x = x; result.y = y; result.actual = actual; result.expected = expected;
+                }
+                result.maxDelta = Math.max(result.maxDelta, Math.abs(Color.alpha(actual) - Color.alpha(expected)));
+                result.maxDelta = Math.max(result.maxDelta, Math.abs(Color.red(actual) - Color.red(expected)));
+                result.maxDelta = Math.max(result.maxDelta, Math.abs(Color.green(actual) - Color.green(expected)));
+                result.maxDelta = Math.max(result.maxDelta, Math.abs(Color.blue(actual) - Color.blue(expected)));
+            }
+        }
+        return result;
+    }
+
+    private static final class HardwareDifference {
+        int count, x = -1, y = -1, actual, expected, maxDelta;
+        @Override public String toString() {
+            return "differences=" + count + " first=" + Integer.toHexString(actual) + "/"
+                    + Integer.toHexString(expected) + " x=" + x + " y=" + y + " max_channel_delta=" + maxDelta;
+        }
+    }
+
+    /** Store only this fixture's captured window when a pixel comparison fails. */
+    private static String saveHardwareFailure(Activity activity, Bitmap image) {
+        try {
+            File file = File.createTempFile("hardware-failure-", ".png", activity.getFilesDir());
+            try (FileOutputStream stream = new FileOutputStream(file)) {
+                if (!image.compress(Bitmap.CompressFormat.PNG, 100, stream)) throw new IOException("PNG encoding failed");
+            }
+            return file.getAbsolutePath();
+        } catch (IOException error) {
+            return "capture save failed: " + error.getClass().getSimpleName();
         }
     }
 
