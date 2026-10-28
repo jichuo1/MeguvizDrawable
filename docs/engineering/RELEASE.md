@@ -1,13 +1,15 @@
 # 发布到 Maven Central
 
-坐标：`io.github.jichuo1.meguviz:meguviz-drawable-core` 与 `meguviz-drawable-android`，版本取自 `core/build.gradle.kts` 和 `android/build.gradle.kts`（须一致）。
+坐标：`io.github.jichuo1.meguviz:` 下的 `meguviz-drawable-core`、`-android`、`-compose`、`-meguviz-android`、`-meguviz-ui`，版本取自各模块的 `build.gradle.kts`（须一致）。
+`meguviz-drawable-lumen` 不进 Central 包：它依赖只发布在 JitPack 的 `lumen-engine`，待 Lumen 上 Central 后再加入 `build.gradle.kts` 的 `centralModules`。
 
 ## 生成上传包
 
-前提：JDK 17、Android SDK、系统 `gpg` 中有签名密钥，且公钥已发布到 keyserver。签名口令由 gpg-agent 弹窗询问，不进入构建参数。
+前提：JDK 17、Android SDK、系统 `gpg` 中有签名密钥，且公钥已发布到 keyserver。签名口令由 gpg-agent 弹窗询问，不进入构建参数；
+因此必须在有人操作的终端里运行，口令缓存过期后无人值守会在签名处超时。构建新增模块需要联网解析 Compose、MeguvizAndroid、MeguvizUI 与 Lumen。
 
 ```text
-gradlew -Pmeguviz.profile=android -Pmeguviz.sign=true centralBundle
+gradlew -Pmeguviz.profile=bridges -Pmeguviz.sign=true centralBundle
 python tools/verify_central_bundle.py build/central/meguviz-drawable-<版本>-central-bundle.zip
 ```
 

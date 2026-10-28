@@ -32,6 +32,13 @@ children that schedule during preparation are rejected, and the host must hide
 or close the wrapper before replacing its callback. API 29 BlendMode tint is
 not forwarded. See the class contract for these boundaries.
 
+Optional bridges are separate artifacts and none is required by the base library: Compose (`Painter` over
+the same Canvas backend), MeguvizAndroid (lifecycle, resource and frame authorities), MeguvizUI (exclusive
+background property) and Lumen (surface bindings under drawable-scope ownership). They are built with
+`-Pmeguviz.profile=bridges`. Their upstream versions, the behavior observed on the real artifacts and the
+limits are in [bridges](docs/engineering/BRIDGES.md); the Lumen bridge is not in the Maven Central bundle because
+`lumen-engine` is not on Central.
+
 See [engineering status](docs/engineering/STATUS.md) and
 [baseline](docs/engineering/BASELINE.md) for current progress and limits;
 [verification](docs/engineering/VERIFICATION.md) records the initial check.
