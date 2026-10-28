@@ -1,0 +1,20 @@
+[versions]
+kotlin = "2.4.21"
+compose-bom = "2026.09.00"
+androidx-activity = "1.12.4"
+lumen = "1.5.5"
+junit = "4.13.2"
+meguviz-android = "1.0.0"
+meguviz-ui = "1.0.0"
+
+[libraries]
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-runtime = { module = "androidx.compose.runtime:runtime" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
+junit = { module = "junit:junit", version.ref = "junit" }
+lumen-engine = { module = "com.github.jichuo1.LumenCoacervationEngine:lumen-engine", version.ref = "lumen" }
+meguviz-android-runtime = { module = "io.github.jichuo1.meguviz:meguviz-android-runtime", version.ref = "meguviz-android" }
+meguviz-ui-core = { module = "io.github.jichuo1.meguviz:meguviz-ui-core", version.ref = "meguviz-ui" }

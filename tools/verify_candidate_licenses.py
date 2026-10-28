@@ -21,6 +21,14 @@ def main() -> int:
         ("meguviz-drawable-core", f"meguviz-drawable-core-{version}-sources.jar"),
         ("meguviz-drawable-android", f"meguviz-drawable-android-{version}.aar"),
         ("meguviz-drawable-android", f"meguviz-drawable-android-{version}-sources.jar"),
+    ) + tuple(
+        pair
+        for module in ("compose", "meguviz-android", "meguviz-ui", "lumen")
+        for pair in (
+            (f"meguviz-drawable-{module}", f"meguviz-drawable-{module}-{version}.aar"),
+            (f"meguviz-drawable-{module}", f"meguviz-drawable-{module}-{version}-sources.jar"),
+        )
+        if (group_path / f"meguviz-drawable-{module}" / version).is_dir()
     )
     try:
         license_bytes = (root / "LICENSE").read_bytes()
