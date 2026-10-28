@@ -240,6 +240,47 @@ public final class RecipeDrawable extends Drawable {
     private static int multipliedAlpha(int first, int second) { return (first * second + 127) / 255; }
 
     @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
+
+    /**
+     * Captures the immutable recipe and reconstructible appearance, never the
+     * owner's bounds, state, level, callback or mutable drawing objects.
+     * Arbitrary filters and tint cannot be safely reconstructed here.
+     */
+    @Override public ConstantState getConstantState() {
+        if (explicitFilter != null || tint != null) return null;
+        return new RecipeState(recipe, density, alpha, tintMode, getChangingConfigurations());
+    }
+
+    /** This drawable already owns all mutable runtime objects independently. */
+    @Override public Drawable mutate() { return this; }
+
+    private static final class RecipeState extends ConstantState {
+        private final DrawingRecipe recipe;
+        private final float density;
+        private final int alpha;
+        private final PorterDuff.Mode tintMode;
+        private final int configurations;
+
+        RecipeState(DrawingRecipe recipe, float density, int alpha, PorterDuff.Mode tintMode, int configurations) {
+            this.recipe = recipe;
+            this.density = density;
+            this.alpha = alpha;
+            this.tintMode = tintMode;
+            this.configurations = configurations;
+        }
+
+        @Override public Drawable newDrawable() {
+            RecipeDrawable result = new RecipeDrawable(recipe, density);
+            result.alpha = alpha;
+            result.tintMode = tintMode;
+            result.setChangingConfigurations(configurations);
+            result.updateTint();
+            return result;
+        }
+
+        @Override public int getChangingConfigurations() { return configurations; }
+    }
+
     @Override public int getIntrinsicWidth() { return recipe.metrics().intrinsicWidth(); }
     @Override public int getIntrinsicHeight() { return recipe.metrics().intrinsicHeight(); }
     @Override public int getMinimumWidth() { return recipe.metrics().minimumWidth(); }

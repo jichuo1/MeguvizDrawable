@@ -56,6 +56,13 @@ public final class ContractInstrumentation extends Instrumentation {
                 finish(Activity.RESULT_OK, result);
                 return;
             }
+            if ("protocol".equals(mode)) {
+                constantStateAndOwnerIsolation();
+                result.putString("stream", "\nPROTOCOL PASS checks=" + checks + "\n");
+                result.putInt("checks", checks);
+                finish(Activity.RESULT_OK, result);
+                return;
+            }
             shapesAndGradient();
             statesAndIsolation();
             reusedStateArrayAndDistinctKeys();
@@ -139,7 +146,7 @@ public final class ContractInstrumentation extends Instrumentation {
         check(bitmap(second).getPixel(10, 10) == Color.BLUE, "owner isolation");
         first.setState(new int[0]);
         check(bitmap(first).getPixel(10, 10) == Color.BLUE, "state restored");
-        check(first.getConstantState() == null, "no unsupported constant state");
+        check(first.getConstantState() != null, "static recipe has reconstructible constant state");
     }
     private void reusedStateArrayAndDistinctKeys() {
         int checked = android.R.attr.state_checked;
@@ -291,6 +298,70 @@ public final class ContractInstrumentation extends Instrumentation {
         check(rejected, "excessive stroke rejected in bounds preparation");
         wide.setBounds(0, 0, 30, 30);
         check(bitmap(wide).getPixel(15, 15) == Color.RED, "valid bounds recover after rejected stroke");
+    }
+
+    private void constantStateAndOwnerIsolation() {
+        int pressed = android.R.attr.state_pressed;
+        StateColorList colors = new StateColorList(Arrays.asList(new StateSpec(pressed), new StateSpec()),
+                new int[] { Color.RED, Color.BLUE });
+        DrawingRecipe recipe = new DrawingRecipe(ShapeSpec.rectangle(), FillSpec.statefulSolid(colors, Color.GREEN),
+                null, new LayoutMetrics(-1, 20, 3, 4, 1, 2, 3, 4, 0, 0, 0, 0));
+        RecipeDrawable original = new RecipeDrawable(recipe, 2f);
+        original.setBounds(4, 5, 24, 25);
+        original.setState(new int[] { pressed });
+        original.setLevel(777);
+        original.setAlpha(128);
+        original.setChangingConfigurations(0x400);
+        CallbackProbe originalCallback = new CallbackProbe();
+        original.setCallback(originalCallback);
+
+        Drawable.ConstantState snapshot = original.getConstantState();
+        check(snapshot != null, "static recipe can be reconstructed");
+        check(snapshot.getChangingConfigurations() == 0x400, "constant configurations recorded");
+        RecipeDrawable a = (RecipeDrawable) snapshot.newDrawable();
+        RecipeDrawable b = (RecipeDrawable) snapshot.newDrawable(getTargetContext().getResources());
+        check(a != b && a != original && b != original, "newDrawable returns separate owners");
+        check(a.mutate() == a && b.mutate() == b, "mutate returns the owned instance");
+        check(a.getBounds().isEmpty() && b.getBounds().isEmpty(), "bounds are not copied from owner");
+        check(a.getLevel() == 0 && b.getLevel() == 0, "level is not copied from owner");
+        check(a.getState().length == 0 && b.getState().length == 0, "state is not copied from owner");
+        check(a.getCallback() == null && b.getCallback() == null, "callback is not copied from owner");
+        check(a.getAlpha() == 128 && b.getAlpha() == 128, "appearance alpha is reconstructed");
+        check(a.getChangingConfigurations() == 0x400, "instance configurations are reconstructed");
+        a.setBounds(4, 5, 24, 25);
+        b.setBounds(4, 5, 24, 25);
+        check(Color.blue(bitmap(a).getPixel(10, 10)) >= 250
+                && Color.alpha(bitmap(a).getPixel(10, 10)) == 128, "default state and alpha restored");
+        a.setState(new int[] { pressed });
+        a.setAlpha(255);
+        check(bitmap(a).getPixel(10, 10) == Color.RED, "first owner changes independently");
+        check(Color.blue(bitmap(b).getPixel(10, 10)) >= 250
+                && Color.alpha(bitmap(b).getPixel(10, 10)) == 128, "second owner keeps its appearance");
+        check(Color.red(bitmap(original).getPixel(10, 10)) >= 250
+                && Color.alpha(bitmap(original).getPixel(10, 10)) == 128, "original owner keeps its appearance");
+        a.setLevel(-7);
+        check(a.getLevel() == -7 && b.getLevel() == 0 && original.getLevel() == 777,
+                "level is per owner and is not clamped");
+        a.setVisible(false, false);
+        check(!a.isVisible() && b.isVisible() && original.isVisible(), "visibility is per owner");
+        CallbackProbe aCallback = new CallbackProbe();
+        a.setCallback(aCallback);
+        a.invalidateSelf();
+        check(aCallback.invalidations == 1 && originalCallback.invalidations == 0,
+                "callbacks are per owner");
+        Rect padding = new Rect();
+        check(a.getIntrinsicWidth() == -1 && a.getIntrinsicHeight() == 20
+                && a.getMinimumWidth() == 3 && a.getMinimumHeight() == 4
+                && a.getPadding(padding) && padding.equals(new Rect(1, 2, 3, 4)), "fixed metrics reconstructed");
+        original.setColorFilter(new PorterDuffColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN));
+        check(original.getConstantState() == null, "mutable external filter cannot be reconstructed");
+        original.setColorFilter(null);
+        check(original.getConstantState() != null, "clearing filter restores reconstructibility");
+        original.setTintList(ColorStateList.valueOf(Color.BLUE));
+        check(original.getConstantState() == null, "tint is conservatively not reconstructed");
+        RecipeDrawable beforeChange = (RecipeDrawable) snapshot.newDrawable();
+        beforeChange.setBounds(4, 5, 24, 25);
+        check(Color.blue(bitmap(beforeChange).getPixel(10, 10)) >= 250, "snapshot remains stable after later owner change");
     }
 
     /** Draw and compare candidate/reference on a real hardware-accelerated window. */

@@ -7,9 +7,9 @@
 | 门禁 | 状态 | 主要缺口 |
 |---|---|---|
 | G0 基线 | IN_PROGRESS | 依赖制品、运行轨迹和实验协议尚未完整核验 |
-| G1 迁移 | IN_PROGRESS | 隔离依赖退出候选已完成图、R8 和 debug APK 对照；BIL 草稿 PR 未合并，release APK 和运行证据尚缺 |
+| G1 迁移 | IN_PROGRESS | BIL `Advanced` 已快进基线，退出候选已完成图、R8、debug APK 与测试/lint；PR 尚未合并，固定签名 release APK 和运行证据尚缺 |
 | G2 纯 JVM | IN_PROGRESS | 完整模型、独立参考、扩展与缓存合同尚未齐备 |
-| G3 Android 和绑定 | IN_PROGRESS | API 21/22/34/37 软件路径有有限证据；API 37 硬件四场景通过，完整协议和其他设备尚未完成 |
+| G3 Android 和绑定 | IN_PROGRESS | `dev.3` API 37 静态快照/owner 协议通过；API 21/22 新候选和完整生命周期/其他设备尚未完成 |
 | G4 独立消费者 | IN_PROGRESS | 独立 consumer、实验性 provider 和有限旧字节码对照已推进；完整扩展与兼容性证据仍未完成 |
 | G5 发布验证 | IN_PROGRESS | 项目许可证已确定；发布前设备、图像、性能和公开制品回读尚未完成 |
 | G6 高级专项 | NOT_STARTED | 前置依赖、实验和设备验证尚未完成 |

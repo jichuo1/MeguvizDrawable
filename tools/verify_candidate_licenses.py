@@ -12,7 +12,7 @@ def main() -> int:
     root = Path(__file__).resolve().parent.parent
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repository", type=Path, default=root / "build" / "staging-maven")
-    parser.add_argument("--version", default="0.1.0-dev.2")
+    parser.add_argument("--version", default="0.1.0-dev.3")
     args = parser.parse_args()
     group_path = args.repository / "io" / "github" / "jichuo1" / "meguviz"
     version = args.version

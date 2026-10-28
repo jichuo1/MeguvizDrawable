@@ -48,3 +48,11 @@ adb -s <device> shell am instrument -w -r io.github.jichuo1.meguviz.drawable.con
 dev.2 候选 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031a352c9ba`；Android AAR SHA-256 `48ad5815a27ea0e2844a5bc50cdc869d3a6963ea17735a5db47e28353be6424f`。若这些字节改变，相关消费者和 ABI 证据需重新核验。
 
 独立 provider 的 R8 应用使用调试签名副本，在 API 37 设备上通过黑盒 instrumentation 的四点屏幕采样。原 debug instrumentation 直接链接未混淆类名，在 R8 目标上以 `NoClassDefFoundError` 失败，该失败保留；黑盒结果不替代原合同或完整像素对照。BIL 依赖退出见 [隔离补丁与草稿 PR](../../integration/bil/README.md)，尚未合入 BIL 主分支或完成正式 release APK、Hook 和 UI 验证。
+
+## Drawable 协议候选，2026-10-28
+
+- `0.1.0-dev.3` 对静态、无 tint 和外部滤镜的 `RecipeDrawable` 提供可重建的 `ConstantState`；实例各自持有绘制和运行状态。存在 tint 或显式滤镜时保守返回 `null`。API 37 真机协议模式通过 22 项检查，原软件合同 52 项及硬件合同 60 项通过。
+- 对新候选重新构建 core/Android、独立消费者及 provider；Gradle metadata、POM、强制 R8 构建和许可证检查通过。API 21/22 对本候选的重跑仍待执行，不能沿用 dev.2 结果。
+- `Advanced` 已非强制快进到 BIL 基线，PR #39 已改为以 `Advanced` 为目标；合并及该分支最终 CI 尚待确认。BIL 候选隔离快照的 testDebugUnitTest 共 4,116 项、1 跳过、0 失败/错误；lint 未发现有效新增错误。固定签名 release APK、实际 Hook 和真实页面仍缺证据。
+
+dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031a352c9ba`；Android AAR SHA-256 `8335d055955304e1dab311a505a236860a5d849ec48db05e0a9970c2ef07260f`。这些结果仅绑定上述候选字节。

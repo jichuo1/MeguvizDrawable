@@ -10,7 +10,8 @@
 其他改动。移除验证必须区分 release 依赖组件图、混淆产物、APK、设备和实际界面证据。
 
 对应远端候选为草稿 [BIL PR #39](https://github.com/jichuo1/Bilibili_Innocent_Lab/pull/39)，
-其两个文件内容与隔离补丁一致；尚未合并到 BIL 主分支。
+其两个文件内容与隔离补丁一致。`Advanced` 已非强制快进到基线并设为 PR 目标；
+PR 尚未合并，BIL `main` 和原工作树未修改。
 
 隔离基线与候选的 `releaseRuntimeClasspath` 完整组件图分别为 101 与 100 项，均无未解析项；
 两图唯一差异为移除旧库 1.0.7。隔离候选的 `minifyReleaseWithR8` 已完成，R8 映射与生成的
