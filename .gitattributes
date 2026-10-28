@@ -1,0 +1,4 @@
+# Archives embed these files verbatim (META-INF/LICENSE, *-sources.jar), so their bytes must not depend on the checkout platform.
+LICENSE text eol=lf
+*.java text eol=lf
+*.kt text eol=lf
