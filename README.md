@@ -26,6 +26,12 @@ closed polygons through a separate Android drawable. Its supported operations
 and independent consumer fixture are described in
 [fixtures/provider](fixtures/provider/README.md); this API is not yet stable.
 
+`OwnedDrawableWrapper` is a single-owner, closeable adapter for an unattached
+external drawable. Animated children require an already attached host callback;
+children that schedule during preparation are rejected, and the host must hide
+or close the wrapper before replacing its callback. API 29 BlendMode tint is
+not forwarded. See the class contract for these boundaries.
+
 See [engineering status](docs/engineering/STATUS.md) and
 [baseline](docs/engineering/BASELINE.md) for current progress and limits;
 [verification](docs/engineering/VERIFICATION.md) records the initial check.

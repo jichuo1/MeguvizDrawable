@@ -43,6 +43,9 @@ tr -d '\r' < verification/api/result.log | grep -x 'INSTRUMENTATION_CODE: -1' > 
 adb shell am instrument -w -r -e mode protocol io.github.jichuo1.meguviz.drawable.contracttest/io.github.jichuo1.meguviz.drawable.android.test.ContractInstrumentation | tee verification/api/protocol-result.log
 tr -d '\r' < verification/api/protocol-result.log | grep -x 'PROTOCOL PASS checks=22' > /dev/null
 tr -d '\r' < verification/api/protocol-result.log | grep -x 'INSTRUMENTATION_CODE: -1' > /dev/null
+adb shell am instrument -w -r -e mode wrapper io.github.jichuo1.meguviz.drawable.contracttest/io.github.jichuo1.meguviz.drawable.android.test.ContractInstrumentation | tee verification/api/wrapper-result.log
+tr -d '\r' < verification/api/wrapper-result.log | grep -x 'WRAPPER PASS checks=36' > /dev/null
+tr -d '\r' < verification/api/wrapper-result.log | grep -x 'INSTRUMENTATION_CODE: -1' > /dev/null
 install_and_verify "$provider_package" verification/api/provider-app.apk provider-app
 install_and_verify "$provider_test_package" verification/api/provider-test.apk provider-test
 adb shell am instrument -w -r "$provider_test_package/example.provider.app.ProviderInstrumentation" | tee verification/api/provider-result.log

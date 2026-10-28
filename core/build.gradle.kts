@@ -3,7 +3,7 @@ plugins {
     `maven-publish`
 }
 
-version = "0.1.0-dev.3"
+version = "0.1.0-dev.4"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8

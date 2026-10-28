@@ -28,7 +28,7 @@ against the earlier artifact and run without recompilation on the new one.
 This Java-level dump does not validate Kotlin metadata, runtime behavior,
 Android API availability, shrinking or dynamic providers.
 
-`0.1.0-dev.2/` and `0.1.0-dev.3/` are separate later candidate snapshots.
+`0.1.0-dev.2/`, `0.1.0-dev.3/`, and `0.1.0-dev.4/` are separate later candidate snapshots.
 Preserve the earlier directories instead of replacing them. The frozen `fixtures/abi/LegacyCoreClient`
 exercises a small old core API subset without recompiling; it is not an
 exhaustive compatibility guarantee.

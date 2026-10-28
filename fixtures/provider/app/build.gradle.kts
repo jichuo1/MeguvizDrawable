@@ -29,7 +29,7 @@ android {
 }
 dependencies {
     implementation(project(":provider"))
-    implementation("io.github.jichuo1.meguviz:meguviz-drawable-android:0.1.0-dev.3")
+    implementation("io.github.jichuo1.meguviz:meguviz-drawable-android:0.1.0-dev.4")
 }
 
 tasks.register("verifyCandidateResolution") {
@@ -57,8 +57,8 @@ tasks.register("verifyCandidateResolution") {
             }
         }
         check(providers == 1 && modules == setOf(
-            "io.github.jichuo1.meguviz:meguviz-drawable-core:0.1.0-dev.3",
-            "io.github.jichuo1.meguviz:meguviz-drawable-android:0.1.0-dev.3"
+            "io.github.jichuo1.meguviz:meguviz-drawable-core:0.1.0-dev.4",
+            "io.github.jichuo1.meguviz:meguviz-drawable-android:0.1.0-dev.4"
         ) && artifacts.size == 3) { "Unexpected provider dependency graph: $modules, providers=$providers" }
     }
 }

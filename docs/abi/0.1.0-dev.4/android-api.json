@@ -1,0 +1,14 @@
+{
+  "api_sha256": "18da11f48ac42a98d25e2fcd3c912c790000139d7b3c7e6ffd2b34ce0fc695b4",
+  "artifact": "meguviz-drawable-android-0.1.0-dev.4.aar",
+  "artifact_sha256": "54ff093feea06fc215c4f084779829fbca48d04980fe14fbe2de10131d9cfcc9",
+  "classes": 3,
+  "embedded_jars": [
+    {
+      "name": "classes.jar",
+      "sha256": "772f74344a7b8463d5a48b1518b0b660eaba3e1d8a059574e4ffde50797d936c"
+    }
+  ],
+  "javap_version": "17.0.20.1",
+  "status": "initial_baseline_no_compatibility_claim"
+}

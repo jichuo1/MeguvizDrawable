@@ -63,6 +63,13 @@ public final class ContractInstrumentation extends Instrumentation {
                 finish(Activity.RESULT_OK, result);
                 return;
             }
+            if ("wrapper".equals(mode)) {
+                checks = WrapperContract.run();
+                result.putString("stream", "\nWRAPPER PASS checks=" + checks + "\n");
+                result.putInt("checks", checks);
+                finish(Activity.RESULT_OK, result);
+                return;
+            }
             shapesAndGradient();
             statesAndIsolation();
             reusedStateArrayAndDistinctKeys();

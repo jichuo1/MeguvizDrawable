@@ -9,7 +9,7 @@
 | G0 基线 | IN_PROGRESS | 依赖制品、运行轨迹和实验协议尚未完整核验 |
 | G1 迁移 | IN_PROGRESS | BIL PR 已合入 `Advanced`；隔离候选的图、R8、debug APK、测试/lint 和控件对照已验证；固定签名 release APK、真实页面与 Hook 仍缺证据 |
 | G2 纯 JVM | IN_PROGRESS | 完整模型、独立参考、扩展与缓存合同尚未齐备 |
-| G3 Android 和绑定 | IN_PROGRESS | `dev.3` API 21/22/37 静态快照/owner 协议有证据；完整生命周期及其他设备尚未完成 |
+| G3 Android 和绑定 | IN_PROGRESS | `dev.3` 静态快照/owner 协议有证据；`dev.4` 外部子项包装器待设备验证，完整生命周期及其他设备尚未完成 |
 | G4 独立消费者 | IN_PROGRESS | 独立 consumer、实验性 provider 和有限旧字节码对照已推进；完整扩展与兼容性证据仍未完成 |
 | G5 发布验证 | IN_PROGRESS | 独立复现页性能确认未证明预注册收益；真实 BIL 页面、更多设备与公开制品回读仍待验证 |
 | G6 高级专项 | NOT_STARTED | 前置依赖、实验和设备验证尚未完成 |
