@@ -1,0 +1,67 @@
+# io.github.jichuo1.meguviz.drawable.ui.RecipeBackground (public)
+public final class io.github.jichuo1.meguviz.drawable.ui.RecipeBackground implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.drawable.ui.RecipeBackground(io.github.jichuo1.meguviz.ui.PropertyBinding<?, io.github.jichuo1.meguviz.drawable.model.DrawingRecipe>, io.github.jichuo1.meguviz.drawable.binding.BindingScope, io.github.jichuo1.meguviz.drawable.ui.RecipeBackground$Writer);
+    descriptor: (Lio/github/jichuo1/meguviz/ui/PropertyBinding;Lio/github/jichuo1/meguviz/drawable/binding/BindingScope;Lio/github/jichuo1/meguviz/drawable/ui/RecipeBackground$Writer;)V
+
+  public final io.github.jichuo1.meguviz.ui.scheduler.SubmitResult submit(io.github.jichuo1.meguviz.drawable.model.DrawingRecipe);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/DrawingRecipe;)Lio/github/jichuo1/meguviz/ui/scheduler/SubmitResult;
+
+  public final void invalidate();
+    descriptor: ()V
+
+  public final long getWrites();
+    descriptor: ()J
+
+  public final long getSkips();
+    descriptor: ()J
+
+  public final boolean isOwned();
+    descriptor: ()Z
+
+  public final void reclaim();
+    descriptor: ()V
+
+  public void close();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.ui.RecipeBackground$Writer (public)
+public final class io.github.jichuo1.meguviz.drawable.ui.RecipeBackground$Writer {
+  public io.github.jichuo1.meguviz.drawable.ui.RecipeBackground$Writer(io.github.jichuo1.meguviz.drawable.binding.SlotBinding<android.graphics.drawable.Drawable>, android.view.View);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding;Landroid/view/View;)V
+
+  public final boolean getWritten();
+    descriptor: ()Z
+
+  public final void setWritten(boolean);
+    descriptor: (Z)V
+
+  public final boolean getLost();
+    descriptor: ()Z
+
+  public final void setLost(boolean);
+    descriptor: (Z)V
+
+  public final boolean getReclaim();
+    descriptor: ()Z
+
+  public final void setReclaim(boolean);
+    descriptor: (Z)V
+
+  public final void write(io.github.jichuo1.meguviz.drawable.model.DrawingRecipe);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/DrawingRecipe;)V
+
+  public final boolean owned();
+    descriptor: ()Z
+}
+
+# io.github.jichuo1.meguviz.drawable.ui.RecipeBackgroundKt (public)
+public final class io.github.jichuo1.meguviz.drawable.ui.RecipeBackgroundKt {
+  public static final java.lang.String BACKGROUND_PROPERTY = "background";
+    descriptor: Ljava/lang/String;
+  public static final <V extends android.view.View> io.github.jichuo1.meguviz.drawable.ui.RecipeBackground bindRecipeBackground(io.github.jichuo1.meguviz.ui.UiSession, io.github.jichuo1.meguviz.ui.ViewRef<V>, io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy, java.lang.String);
+    descriptor: (Lio/github/jichuo1/meguviz/ui/UiSession;Lio/github/jichuo1/meguviz/ui/ViewRef;Lio/github/jichuo1/meguviz/drawable/android/ViewSlots$PaddingPolicy;Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/ui/RecipeBackground;
+
+  public static io.github.jichuo1.meguviz.drawable.ui.RecipeBackground bindRecipeBackground$default(io.github.jichuo1.meguviz.ui.UiSession, io.github.jichuo1.meguviz.ui.ViewRef, io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy, java.lang.String, int, java.lang.Object);
+    descriptor: (Lio/github/jichuo1/meguviz/ui/UiSession;Lio/github/jichuo1/meguviz/ui/ViewRef;Lio/github/jichuo1/meguviz/drawable/android/ViewSlots$PaddingPolicy;Ljava/lang/String;ILjava/lang/Object;)Lio/github/jichuo1/meguviz/drawable/ui/RecipeBackground;
+}

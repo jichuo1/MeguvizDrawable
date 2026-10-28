@@ -1,0 +1,84 @@
+# io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding (public)
+public final class io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding implements java.lang.AutoCloseable {
+  public static io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding create(io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope, io.github.jichuo1.meguviz.android.runtime.resources.ResourceState, io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox, io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$RegistrySource, long);
+    descriptor: (Lio/github/jichuo1/meguviz/android/runtime/core/LifecycleScope;Lio/github/jichuo1/meguviz/android/runtime/resources/ResourceState;Lio/github/jichuo1/meguviz/android/runtime/core/BoundedMailbox;Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$RegistrySource;J)Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding;
+
+  public io.github.jichuo1.meguviz.drawable.binding.BindingScope scope();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/binding/BindingScope;
+
+  public io.github.jichuo1.meguviz.drawable.binding.BindingEnvironment project();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/binding/BindingEnvironment;
+
+  public float density();
+    descriptor: ()F
+
+  public boolean isActive();
+    descriptor: ()Z
+
+  public boolean sync();
+    descriptor: ()Z
+
+  public io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Request begin(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$Request;
+
+  public <R> io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult commit(io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Request, R, io.github.jichuo1.meguviz.drawable.binding.BindingScope$Installer<R>, io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Releaser<R>);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$Request;Ljava/lang/Object;Lio/github/jichuo1/meguviz/drawable/binding/BindingScope$Installer;Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding$Releaser;)Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+
+  public <R> io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Posting post(io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Request, R, io.github.jichuo1.meguviz.drawable.binding.BindingScope$Installer<R>, io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Releaser<R>, io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Listener);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$Request;Ljava/lang/Object;Lio/github/jichuo1/meguviz/drawable/binding/BindingScope$Installer;Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding$Releaser;Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$Listener;)Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$Posting;
+
+  public void close();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Listener (public)
+public interface io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Listener {
+  public abstract void onResult(io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;)V
+
+  public abstract void onFailure(java.lang.Throwable);
+    descriptor: (Ljava/lang/Throwable;)V
+}
+
+# io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Posting (public)
+public final class io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Posting {
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission admission();
+    descriptor: ()Lio/github/jichuo1/meguviz/android/runtime/core/BoundedMailbox$Admission;
+
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$WorkHandle handle();
+    descriptor: ()Lio/github/jichuo1/meguviz/android/runtime/core/BoundedMailbox$WorkHandle;
+
+  public boolean accepted();
+    descriptor: ()Z
+}
+
+# io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$RegistrySource (public)
+public interface io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$RegistrySource {
+  public abstract long revision();
+    descriptor: ()J
+}
+
+# io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Request (public)
+public final class io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$Request {
+  public io.github.jichuo1.meguviz.drawable.binding.RequestStamp stamp();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/binding/RequestStamp;
+}
+
+# io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult (public)
+public final class io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult> {
+  public static final io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult COMMITTED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult STALE;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult INACTIVE;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult REJECTED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult CLOSED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+  public static io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+
+  public static io.github.jichuo1.meguviz.drawable.meguviz.android.MeguvizBinding$UpdateResult valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/meguviz/android/MeguvizBinding$UpdateResult;
+}

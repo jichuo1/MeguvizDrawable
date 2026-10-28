@@ -24,3 +24,4 @@ val profile = providers.gradleProperty("meguviz.profile").orElse("host").get()
 require(profile in setOf("host", "android", "bridges")) { "meguviz.profile must be host, android or bridges" }
 include(":core")
 if (profile != "host") include(":android")
+if (profile == "bridges") include(":compose", ":meguviz-android", ":meguviz-ui", ":lumen")

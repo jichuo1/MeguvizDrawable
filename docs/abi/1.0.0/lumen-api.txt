@@ -1,0 +1,84 @@
+# io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge (public)
+public final class io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge implements java.lang.AutoCloseable {
+  public static final java.lang.String BACKGROUND = "background";
+    descriptor: Ljava/lang/String;
+  public io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge(io.github.jichuo1.meguviz.drawable.binding.BindingScope, com.lumen.coacervation.engine.host.LumenSurfaceSession, boolean);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/binding/BindingScope;Lcom/lumen/coacervation/engine/host/LumenSurfaceSession;Z)V
+
+  public io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration bind(android.view.View, com.lumen.coacervation.engine.host.LumenSurfaceOptions, android.view.View);
+    descriptor: (Landroid/view/View;Lcom/lumen/coacervation/engine/host/LumenSurfaceOptions;Landroid/view/View;)Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration;
+
+  public io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration bind(java.lang.String, android.view.View, com.lumen.coacervation.engine.host.LumenSurfaceOptions, android.view.View);
+    descriptor: (Ljava/lang/String;Landroid/view/View;Lcom/lumen/coacervation/engine/host/LumenSurfaceOptions;Landroid/view/View;)Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration;
+
+  public void pause();
+    descriptor: ()V
+
+  public void resume();
+    descriptor: ()V
+
+  public boolean isClosed();
+    descriptor: ()Z
+
+  public void close();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration (public)
+public final class io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration implements java.lang.AutoCloseable {
+  public java.lang.String key();
+    descriptor: ()Ljava/lang/String;
+
+  public com.lumen.coacervation.engine.host.LumenSurfaceOptions options();
+    descriptor: ()Lcom/lumen/coacervation/engine/host/LumenSurfaceOptions;
+
+  public io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status status();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration$Status;
+
+  public io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult update(com.lumen.coacervation.engine.host.LumenSurfaceOptions);
+    descriptor: (Lcom/lumen/coacervation/engine/host/LumenSurfaceOptions;)Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+
+  public io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult refresh();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+
+  public void close();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status (public)
+public final class io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status> {
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status BOUND;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration$Status;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status UNBOUND;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration$Status;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status LOST;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration$Status;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status CLOSED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration$Status;
+  public static io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration$Status;
+
+  public static io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$Registration$Status valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$Registration$Status;
+}
+
+# io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult (public)
+public final class io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult> {
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult UNCHANGED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult UPDATED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult REBOUND;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult DEFERRED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult LOST;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+  public static final io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult CLOSED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+  public static io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+
+  public static io.github.jichuo1.meguviz.drawable.lumen.LumenSurfaceBridge$UpdateResult valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/lumen/LumenSurfaceBridge$UpdateResult;
+}

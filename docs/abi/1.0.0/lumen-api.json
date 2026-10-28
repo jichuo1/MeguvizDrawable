@@ -1,0 +1,14 @@
+{
+  "api_sha256": "1e885080fcc980e8e83e3a9c057758877b8e51eba1d2c6bf7856b830271ef8ed",
+  "artifact": "meguviz-drawable-lumen-1.0.0.aar",
+  "artifact_sha256": "22ba56c96220bf2aae88ac8554e9222dfd464532ab91d4e26954653d55e7da5e",
+  "classes": 4,
+  "embedded_jars": [
+    {
+      "name": "classes.jar",
+      "sha256": "107debed67b6b09ddc6e4ea18f947faca70652f19878c25de5b85073ef3ccf92"
+    }
+  ],
+  "javap_version": "17.0.20.1",
+  "status": "initial_baseline_no_compatibility_claim"
+}

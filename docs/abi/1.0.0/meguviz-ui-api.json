@@ -1,0 +1,14 @@
+{
+  "api_sha256": "a04a8c0748e2c291c5dd5bea387d257339639980b10754c2c0e96205e84123ac",
+  "artifact": "meguviz-drawable-meguviz-ui-1.0.0.aar",
+  "artifact_sha256": "78ed3f5c07d09ceab372da4f7eb0f4befbb3991e1a71f5cccc978e0e090e1afd",
+  "classes": 3,
+  "embedded_jars": [
+    {
+      "name": "classes.jar",
+      "sha256": "d0a0f152abf1baef8dba9b2318509ce67a19b161f3031132d7875f142fc9d034"
+    }
+  ],
+  "javap_version": "17.0.20.1",
+  "status": "initial_baseline_no_compatibility_claim"
+}
