@@ -31,9 +31,9 @@ adb -s <device> shell am instrument -w -r io.github.jichuo1.meguviz.drawable.con
 
 ## 发布候选与扩展设备验证，2026-10-28
 
-- 同一测试 APK 在 API 34 模拟器和 API 37 真机上各通过 45 项软件 Canvas 合同，增加透明渐变及 alpha、非对称圆角变换、滤镜与 tint、实例隔离和错误恢复覆盖。硬件 Canvas 和其他 API 仍未验证。
-- 本地隔离 Maven 仓库的 `0.1.0-dev.1` 候选由独立 Gradle 根目录 `fixtures/consumer` 消费，不使用 project 依赖或 composite 替换。Gradle metadata 和 Maven POM 两条解析路径都检查了解析字节与候选一致；releaseRuntimeClasspath 仅包括本库 Android 和 core，release 消费者完成 R8 构建。当前不代表制品已公开发行。
-- 初版候选元数据曾意外包含 Kotlin 标准库，已保留本地失败证据；仅有 Java 生产源码的当前配置已禁用自动注入，重新生成的 Android 候选只声明本库 core 依赖。
+- 同一测试 APK 在 API 34 模拟器和 API 37 真机上各通过 52 项软件 Canvas 合同，覆盖透明渐变及 alpha、非对称圆角变换、滤镜与 tint、实例隔离、错误恢复、状态数组原地复用及 checked/selected 区分。硬件 Canvas、API 21/22 和其他版本仍未验证。
+- 本地隔离 Maven 仓库的 `0.1.0-dev.1` 候选由独立 Gradle 根目录 `fixtures/consumer` 消费，不使用 project 依赖或 composite 替换。Gradle metadata 和 Maven POM 两条解析路径都检查了解析字节与候选一致；releaseRuntimeClasspath 仅包括本库 Android 和 core，release 消费者完成 R8 构建。该未签名 APK 的独立调试签名副本在 API 37 真机安装并冷启动，确认安装字节与前台 Activity；未作页面像素验证，也不代表正式签名或公开发行。
+- 初版候选元数据曾意外包含 Kotlin 标准库，已保留本地失败证据；仅有 Java 生产源码的当前配置已禁用自动注入，重新生成的 Android 候选只声明本库 core 依赖。项目已选用 Apache-2.0，候选 POM、二进制与源码归档均携带对应许可证，并以 `tools/verify_candidate_licenses.py` 核对。
 - 从候选 JAR 和 AAR 生成首版 [ABI 清单](../abi/README.md)，分别覆盖 17 个和 1 个公开或受保护类。首版无历史版本，不声称旧二进制兼容。
 
-候选 JAR SHA-256：`2961dd24009c266021fc70e038275e3c7e127032b4718bb1ff58faecf9bb4ee8`；候选 AAR SHA-256：`7fb6f48b7a1bf209f4ad6fdcd8b6ef73a82c07caa6570fe8234a4bda0f0fd849`。结果只绑定这些候选字节；若重新生成制品导致摘要变化，必须重新验证。完整构建与测试原始日志保留在本地。
+候选 JAR SHA-256：`280635cf5e23b9c82be44195bdb8c2dcbb493b388e6071b63bd8f3de132f373e`；候选 AAR SHA-256：`bce48e151df9ac37f591080a2dc625d39d106fe553ffbcb40db6454411304272`。结果只绑定这些候选字节；若重新生成制品导致摘要变化，必须重新验证。完整构建与测试原始日志保留在本地。

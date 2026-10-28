@@ -53,6 +53,7 @@ public final class ContractInstrumentation extends Instrumentation {
             }
             shapesAndGradient();
             statesAndIsolation();
+            reusedStateArrayAndDistinctKeys();
             metricsAndCallbacks();
             filtersAndAlpha();
             transparentGradientReference();
@@ -130,6 +131,38 @@ public final class ContractInstrumentation extends Instrumentation {
         check(bitmap(first).getPixel(10, 10) == Color.BLUE, "state restored");
         check(first.getConstantState() == null, "no unsupported constant state");
     }
+    private void reusedStateArrayAndDistinctKeys() {
+        int checked = android.R.attr.state_checked;
+        int selected = android.R.attr.state_selected;
+        StateColorList rules = new StateColorList(Arrays.asList(
+                new StateSpec(checked, 0, selected), new StateSpec(selected), new StateSpec()),
+                new int[] { Color.RED, Color.BLUE, Color.GREEN });
+        RecipeDrawable d = drawable(ShapeSpec.rectangle(), FillSpec.statefulSolid(rules, Color.MAGENTA),
+                null, LayoutMetrics.unspecified());
+        check(bitmap(d).getPixel(10, 10) == Color.GREEN, "initial empty state uses wildcard");
+
+        int[] state = { checked, 0, selected };
+        check(d.setState(state) && bitmap(d).getPixel(10, 10) == Color.RED,
+                "checked matches without selected when spec ends at zero");
+        state[0] = selected;
+        state[2] = checked;
+        check(bitmap(d).getPixel(10, 10) == Color.RED && d.getState()[0] == checked,
+                "mutating caller array cannot mutate installed state");
+        check(d.setState(state) && bitmap(d).getPixel(10, 10) == Color.BLUE,
+                "reusing array switches checked to selected and ignores checked after zero");
+        state[0] = 0;
+        state[1] = checked;
+        state[2] = selected;
+        check(d.setState(state) && bitmap(d).getPixel(10, 10) == Color.GREEN,
+                "zero at array start ignores checked and selected");
+        state[0] = checked;
+        state[1] = selected;
+        state[2] = 0;
+        check(d.setState(state) && bitmap(d).getPixel(10, 10) == Color.RED,
+                "checked precedes selected when both are present");
+        check(!d.setState(state), "unchanged reused array has no state change");
+    }
+
     private void metricsAndCallbacks() {
         LayoutMetrics metrics = new LayoutMetrics(-1, 20, 3, 4, 1, 2, 3, 4, 0, 0, 0, 0);
         RecipeDrawable d = drawable(ShapeSpec.rectangle(), FillSpec.solid(Color.RED), null, metrics);

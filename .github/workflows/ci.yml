@@ -24,6 +24,8 @@ jobs:
           java-version: '17'
       - name: JVM contracts
         run: bash gradlew --no-daemon check
+      - name: ABI tool contracts
+        run: python3 tools/test_dump_abi.py
   android:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -45,6 +47,8 @@ jobs:
           bash gradlew -Pmeguviz.profile=android --no-daemon
           :core:publishCandidatePublicationToStagingRepository
           :android:publishCandidatePublicationToStagingRepository
+      - name: Verify bundled licenses
+        run: python3 tools/verify_candidate_licenses.py
       - name: Build isolated release consumer with R8
         run: bash gradlew -p fixtures/consumer --no-daemon :app:assembleRelease :app:verifyCandidateResolution
       - name: Check Maven POM resolution

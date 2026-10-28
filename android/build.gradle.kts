@@ -24,12 +24,26 @@ dependencies {
     api(project(":core"))
 }
 
+// Bundle the license at the archive root, not as a runtime dependency.
+tasks.withType<Zip>().matching { it.name == "bundleReleaseAar" || it.name == "sourceReleaseJar" }
+    .configureEach {
+        from(rootProject.file("LICENSE")) { into("META-INF") }
+    }
+
 afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("candidate") {
                 artifactId = "meguviz-drawable-android"
                 from(components["release"])
+                pom {
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                }
             }
         }
         repositories {

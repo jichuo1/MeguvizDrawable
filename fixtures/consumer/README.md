@@ -17,5 +17,7 @@ gradlew --offline -p fixtures/consumer -Pconsumer.metadata=pom :app:verifyCandid
 The last run intentionally ignores Gradle metadata redirection and consumes
 the Maven POM. On PowerShell, quote each `-P...` argument. The verifier fails
 if the runtime resolution includes unexpected or substituted artifacts and
-prints each artifact's SHA-256. Release uses R8; the resulting unsigned APK is
-a compilation fixture, not a published or device-validated application.
+prints each artifact's SHA-256. Release uses R8; the resulting APK is unsigned
+and is not a published application. A separately debug-signed copy of one
+candidate has been installed and cold-started on one API 37 device; that does
+not validate formal signing, rendered pixels or other devices.

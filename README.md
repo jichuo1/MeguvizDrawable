@@ -24,3 +24,7 @@ still pending.
 See [engineering status](docs/engineering/STATUS.md) and
 [baseline](docs/engineering/BASELINE.md) for current progress and limits;
 [verification](docs/engineering/VERIFICATION.md) records the initial check.
+
+## License
+
+[Apache License 2.0](LICENSE).
