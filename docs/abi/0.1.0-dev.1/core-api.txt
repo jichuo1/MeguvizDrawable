@@ -1,0 +1,372 @@
+# io.github.jichuo1.meguviz.drawable.binding.SlotBinding (public)
+public final class io.github.jichuo1.meguviz.drawable.binding.SlotBinding<T> implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.drawable.binding.SlotBinding(io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Slot<T>);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding$Slot;)V
+
+  public boolean install(T, T);
+    descriptor: (Ljava/lang/Object;Ljava/lang/Object;)Z
+
+  public boolean replace(T);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public boolean isOwned();
+    descriptor: ()Z
+
+  public void close();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Slot (public)
+public interface io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Slot<T> {
+  public abstract T get();
+    descriptor: ()Ljava/lang/Object;
+
+  public abstract void set(T);
+    descriptor: (Ljava/lang/Object;)V
+}
+
+# io.github.jichuo1.meguviz.drawable.core.CornerRadii (public)
+public final class io.github.jichuo1.meguviz.drawable.core.CornerRadii {
+  public static float[] normalize(float, float, float[]);
+    descriptor: (FF[F)[F
+}
+
+# io.github.jichuo1.meguviz.drawable.core.ParameterSlots (public)
+public final class io.github.jichuo1.meguviz.drawable.core.ParameterSlots {
+  public io.github.jichuo1.meguviz.drawable.core.ParameterSlots();
+    descriptor: ()V
+
+  public int alpha();
+    descriptor: ()I
+
+  public float progress();
+    descriptor: ()F
+
+  public float offsetX();
+    descriptor: ()F
+
+  public float offsetY();
+    descriptor: ()F
+
+  public long alphaRevision();
+    descriptor: ()J
+
+  public long progressRevision();
+    descriptor: ()J
+
+  public long offsetRevision();
+    descriptor: ()J
+
+  public boolean setAlpha(int);
+    descriptor: (I)Z
+
+  public boolean setProgress(float);
+    descriptor: (F)Z
+
+  public boolean setOffset(float, float);
+    descriptor: (FF)Z
+}
+
+# io.github.jichuo1.meguviz.drawable.core.StateMatcher (public)
+public final class io.github.jichuo1.meguviz.drawable.core.StateMatcher {
+  public static boolean matches(io.github.jichuo1.meguviz.drawable.model.StateSpec, int[]);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/StateSpec;[I)Z
+
+  public static int matchIndex(io.github.jichuo1.meguviz.drawable.model.StateColorList, int[]);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/StateColorList;[I)I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.DrawingRecipe (public)
+public final class io.github.jichuo1.meguviz.drawable.model.DrawingRecipe {
+  public io.github.jichuo1.meguviz.drawable.model.DrawingRecipe(io.github.jichuo1.meguviz.drawable.model.ShapeSpec, io.github.jichuo1.meguviz.drawable.model.FillSpec, io.github.jichuo1.meguviz.drawable.model.StrokeSpec, io.github.jichuo1.meguviz.drawable.model.LayoutMetrics);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec;Lio/github/jichuo1/meguviz/drawable/model/FillSpec;Lio/github/jichuo1/meguviz/drawable/model/StrokeSpec;Lio/github/jichuo1/meguviz/drawable/model/LayoutMetrics;)V
+
+  public io.github.jichuo1.meguviz.drawable.model.ShapeSpec shape();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec;
+
+  public io.github.jichuo1.meguviz.drawable.model.FillSpec fill();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/FillSpec;
+
+  public io.github.jichuo1.meguviz.drawable.model.StrokeSpec stroke();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/StrokeSpec;
+
+  public io.github.jichuo1.meguviz.drawable.model.LayoutMetrics metrics();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/LayoutMetrics;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.FillSpec (public)
+public final class io.github.jichuo1.meguviz.drawable.model.FillSpec {
+  public static io.github.jichuo1.meguviz.drawable.model.FillSpec solid(int);
+    descriptor: (I)Lio/github/jichuo1/meguviz/drawable/model/FillSpec;
+
+  public static io.github.jichuo1.meguviz.drawable.model.FillSpec statefulSolid(io.github.jichuo1.meguviz.drawable.model.StateColorList, int);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/StateColorList;I)Lio/github/jichuo1/meguviz/drawable/model/FillSpec;
+
+  public static io.github.jichuo1.meguviz.drawable.model.FillSpec linearGradient(float, float, float, float, int[], float[]);
+    descriptor: (FFFF[I[F)Lio/github/jichuo1/meguviz/drawable/model/FillSpec;
+
+  public io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind kind();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/FillSpec$Kind;
+
+  public int color();
+    descriptor: ()I
+
+  public io.github.jichuo1.meguviz.drawable.model.StateColorList stateColors();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/StateColorList;
+
+  public int fallbackColor();
+    descriptor: ()I
+
+  public float startX();
+    descriptor: ()F
+
+  public float startY();
+    descriptor: ()F
+
+  public float endX();
+    descriptor: ()F
+
+  public float endY();
+    descriptor: ()F
+
+  public int[] colors();
+    descriptor: ()[I
+
+  public float[] stops();
+    descriptor: ()[F
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind (public)
+public final class io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind> {
+  public static final io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind SOLID;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/FillSpec$Kind;
+  public static final io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind STATEFUL_SOLID;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/FillSpec$Kind;
+  public static final io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind LINEAR_GRADIENT;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/FillSpec$Kind;
+  public static io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/model/FillSpec$Kind;
+
+  public static io.github.jichuo1.meguviz.drawable.model.FillSpec$Kind valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/model/FillSpec$Kind;
+}
+
+# io.github.jichuo1.meguviz.drawable.model.LayoutMetrics (public)
+public final class io.github.jichuo1.meguviz.drawable.model.LayoutMetrics {
+  public io.github.jichuo1.meguviz.drawable.model.LayoutMetrics(int, int, int, int, int, int, int, int, int, int, int, int);
+    descriptor: (IIIIIIIIIIII)V
+
+  public static io.github.jichuo1.meguviz.drawable.model.LayoutMetrics unspecified();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/LayoutMetrics;
+
+  public int intrinsicWidth();
+    descriptor: ()I
+
+  public int intrinsicHeight();
+    descriptor: ()I
+
+  public int minimumWidth();
+    descriptor: ()I
+
+  public int minimumHeight();
+    descriptor: ()I
+
+  public int paddingLeft();
+    descriptor: ()I
+
+  public int paddingTop();
+    descriptor: ()I
+
+  public int paddingRight();
+    descriptor: ()I
+
+  public int paddingBottom();
+    descriptor: ()I
+
+  public int opticalInsetLeft();
+    descriptor: ()I
+
+  public int opticalInsetTop();
+    descriptor: ()I
+
+  public int opticalInsetRight();
+    descriptor: ()I
+
+  public int opticalInsetBottom();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.Length (public)
+public final class io.github.jichuo1.meguviz.drawable.model.Length {
+  public static io.github.jichuo1.meguviz.drawable.model.Length px(float);
+    descriptor: (F)Lio/github/jichuo1/meguviz/drawable/model/Length;
+
+  public static io.github.jichuo1.meguviz.drawable.model.Length dp(float);
+    descriptor: (F)Lio/github/jichuo1/meguviz/drawable/model/Length;
+
+  public static io.github.jichuo1.meguviz.drawable.model.Length boundsFraction(float, io.github.jichuo1.meguviz.drawable.model.Length$Axis);
+    descriptor: (FLio/github/jichuo1/meguviz/drawable/model/Length$Axis;)Lio/github/jichuo1/meguviz/drawable/model/Length;
+
+  public io.github.jichuo1.meguviz.drawable.model.Length$Unit unit();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/Length$Unit;
+
+  public float value();
+    descriptor: ()F
+
+  public io.github.jichuo1.meguviz.drawable.model.Length$Axis axis();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/Length$Axis;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.Length$Axis (public)
+public final class io.github.jichuo1.meguviz.drawable.model.Length$Axis extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.model.Length$Axis> {
+  public static final io.github.jichuo1.meguviz.drawable.model.Length$Axis WIDTH;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/Length$Axis;
+  public static final io.github.jichuo1.meguviz.drawable.model.Length$Axis HEIGHT;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/Length$Axis;
+  public static io.github.jichuo1.meguviz.drawable.model.Length$Axis[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/model/Length$Axis;
+
+  public static io.github.jichuo1.meguviz.drawable.model.Length$Axis valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/model/Length$Axis;
+}
+
+# io.github.jichuo1.meguviz.drawable.model.Length$Unit (public)
+public final class io.github.jichuo1.meguviz.drawable.model.Length$Unit extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.model.Length$Unit> {
+  public static final io.github.jichuo1.meguviz.drawable.model.Length$Unit PX;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/Length$Unit;
+  public static final io.github.jichuo1.meguviz.drawable.model.Length$Unit DP;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/Length$Unit;
+  public static final io.github.jichuo1.meguviz.drawable.model.Length$Unit BOUNDS_FRACTION;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/Length$Unit;
+  public static io.github.jichuo1.meguviz.drawable.model.Length$Unit[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/model/Length$Unit;
+
+  public static io.github.jichuo1.meguviz.drawable.model.Length$Unit valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/model/Length$Unit;
+}
+
+# io.github.jichuo1.meguviz.drawable.model.ShapeSpec (public)
+public final class io.github.jichuo1.meguviz.drawable.model.ShapeSpec {
+  public static io.github.jichuo1.meguviz.drawable.model.ShapeSpec rectangle();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec;
+
+  public static io.github.jichuo1.meguviz.drawable.model.ShapeSpec ellipse();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec;
+
+  public static io.github.jichuo1.meguviz.drawable.model.ShapeSpec roundRect(io.github.jichuo1.meguviz.drawable.model.Length);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/Length;)Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec;
+
+  public static io.github.jichuo1.meguviz.drawable.model.ShapeSpec roundRect(io.github.jichuo1.meguviz.drawable.model.Length...);
+    descriptor: ([Lio/github/jichuo1/meguviz/drawable/model/Length;)Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec;
+
+  public io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind kind();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec$Kind;
+
+  public io.github.jichuo1.meguviz.drawable.model.Length[] radii();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/model/Length;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind (public)
+public final class io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind> {
+  public static final io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind RECTANGLE;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec$Kind;
+  public static final io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind ELLIPSE;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec$Kind;
+  public static final io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind ROUND_RECT;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec$Kind;
+  public static io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec$Kind;
+
+  public static io.github.jichuo1.meguviz.drawable.model.ShapeSpec$Kind valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/model/ShapeSpec$Kind;
+}
+
+# io.github.jichuo1.meguviz.drawable.model.StateColorList (public)
+public final class io.github.jichuo1.meguviz.drawable.model.StateColorList {
+  public io.github.jichuo1.meguviz.drawable.model.StateColorList(java.util.List<io.github.jichuo1.meguviz.drawable.model.StateSpec>, int[]);
+    descriptor: (Ljava/util/List;[I)V
+
+  public int size();
+    descriptor: ()I
+
+  public io.github.jichuo1.meguviz.drawable.model.StateSpec specAt(int);
+    descriptor: (I)Lio/github/jichuo1/meguviz/drawable/model/StateSpec;
+
+  public int colorAt(int);
+    descriptor: (I)I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.StateSpec (public)
+public final class io.github.jichuo1.meguviz.drawable.model.StateSpec {
+  public io.github.jichuo1.meguviz.drawable.model.StateSpec(int...);
+    descriptor: ([I)V
+
+  public int[] conditions();
+    descriptor: ()[I
+
+  public int size();
+    descriptor: ()I
+
+  public int conditionAt(int);
+    descriptor: (I)I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}
+
+# io.github.jichuo1.meguviz.drawable.model.StrokeSpec (public)
+public final class io.github.jichuo1.meguviz.drawable.model.StrokeSpec {
+  public io.github.jichuo1.meguviz.drawable.model.StrokeSpec(io.github.jichuo1.meguviz.drawable.model.Length, int);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/Length;I)V
+
+  public io.github.jichuo1.meguviz.drawable.model.Length width();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/Length;
+
+  public int color();
+    descriptor: ()I
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+}

@@ -1,0 +1,68 @@
+# io.github.jichuo1.meguviz.drawable.android.RecipeDrawable (public)
+public final class io.github.jichuo1.meguviz.drawable.android.RecipeDrawable extends android.graphics.drawable.Drawable {
+  public io.github.jichuo1.meguviz.drawable.android.RecipeDrawable(io.github.jichuo1.meguviz.drawable.model.DrawingRecipe, float);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/DrawingRecipe;F)V
+
+  public io.github.jichuo1.meguviz.drawable.model.DrawingRecipe recipe();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/DrawingRecipe;
+
+  public void draw(android.graphics.Canvas);
+    descriptor: (Landroid/graphics/Canvas;)V
+
+  protected void onBoundsChange(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)V
+
+  public void setAlpha(int);
+    descriptor: (I)V
+
+  public int getAlpha();
+    descriptor: ()I
+
+  public void setColorFilter(android.graphics.ColorFilter);
+    descriptor: (Landroid/graphics/ColorFilter;)V
+
+  public android.graphics.ColorFilter getColorFilter();
+    descriptor: ()Landroid/graphics/ColorFilter;
+
+  public void setTintList(android.content.res.ColorStateList);
+    descriptor: (Landroid/content/res/ColorStateList;)V
+
+  public void setTint(int);
+    descriptor: (I)V
+
+  public void setTintMode(android.graphics.PorterDuff$Mode);
+    descriptor: (Landroid/graphics/PorterDuff$Mode;)V
+
+  public boolean isStateful();
+    descriptor: ()Z
+
+  public boolean setState(int[]);
+    descriptor: ([I)Z
+
+  public int[] getState();
+    descriptor: ()[I
+
+  protected boolean onStateChange(int[]);
+    descriptor: ([I)Z
+
+  public int getOpacity();
+    descriptor: ()I
+
+  public int getIntrinsicWidth();
+    descriptor: ()I
+
+  public int getIntrinsicHeight();
+    descriptor: ()I
+
+  public int getMinimumWidth();
+    descriptor: ()I
+
+  public int getMinimumHeight();
+    descriptor: ()I
+
+  public boolean getPadding(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)Z
+
+  public void getOutline(android.graphics.Outline);
+    descriptor: (Landroid/graphics/Outline;)V
+}

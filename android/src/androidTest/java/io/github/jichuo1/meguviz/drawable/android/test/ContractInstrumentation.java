@@ -7,11 +7,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.LinearGradient;
 import android.graphics.Outline;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -50,6 +55,10 @@ public final class ContractInstrumentation extends Instrumentation {
             statesAndIsolation();
             metricsAndCallbacks();
             filtersAndAlpha();
+            transparentGradientReference();
+            asymmetricGeometryReference();
+            statefulTintAndOwnership();
+            boundsAndMetricsEdges();
             result.putString("stream", "\nCONTRACT PASS checks=" + checks + "\n");
             result.putInt("checks", checks);
             finish(Activity.RESULT_OK, result);
@@ -153,6 +162,102 @@ public final class ContractInstrumentation extends Instrumentation {
         check(bitmap(d).getPixel(10, 10) == Color.BLUE, "clearing filter restores tint");
         d.setTintList(null);
         check(bitmap(d).getPixel(10, 10) == Color.RED, "clearing tint restores color");
+    }
+
+    /** Compare transparent-endpoint interpolation to a separately constructed platform shader. */
+    private void transparentGradientReference() {
+        int transparentRed = Color.argb(0, 255, 0, 0);
+        int[] colors = { transparentRed, Color.BLUE };
+        float[] stops = { 0f, 1f };
+        RecipeDrawable actual = drawable(ShapeSpec.rectangle(),
+                FillSpec.linearGradient(0, 0, 1, 0, colors, stops), null,
+                LayoutMetrics.unspecified());
+        for (int alpha : new int[] { 0, 1, 128, 255 }) {
+            actual.setAlpha(alpha);
+            Bitmap result = bitmap(actual);
+            Bitmap reference = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(Color.WHITE);
+            paint.setAlpha(alpha);
+            paint.setShader(new LinearGradient(4, 5, 24, 5, colors, stops, Shader.TileMode.CLAMP));
+            new Canvas(reference).drawRect(new RectF(4, 5, 24, 25), paint);
+            check(equalPixels(result, reference), "transparent gradient matches platform shader alpha=" + alpha);
+        }
+    }
+
+    /** Reference path uses platform round-rect normalization, independently of the core helper. */
+    private void asymmetricGeometryReference() {
+        float[] radii = { 13, 4, 8, 9, 6, 5, 2, 3 };
+        Length[] lengths = new Length[8];
+        for (int i = 0; i < radii.length; i++) lengths[i] = Length.px(radii[i]);
+        RecipeDrawable actual = drawable(ShapeSpec.roundRect(lengths), FillSpec.solid(Color.MAGENTA),
+                null, LayoutMetrics.unspecified());
+        Bitmap result = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888);
+        Bitmap reference = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888);
+        Canvas actualCanvas = new Canvas(result);
+        Canvas referenceCanvas = new Canvas(reference);
+        actualCanvas.translate(6, 4); referenceCanvas.translate(6, 4);
+        actualCanvas.rotate(17, 14, 15); referenceCanvas.rotate(17, 14, 15);
+        actualCanvas.scale(0.8f, 0.9f, 14, 15); referenceCanvas.scale(0.8f, 0.9f, 14, 15);
+        actual.draw(actualCanvas);
+        Path path = new Path();
+        path.addRoundRect(new RectF(4, 5, 24, 25), radii, Path.Direction.CW);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.MAGENTA);
+        referenceCanvas.drawPath(path, paint);
+        check(equalPixels(result, reference), "asymmetric transformed shape matches platform path");
+    }
+
+    private void statefulTintAndOwnership() {
+        int pressed = android.R.attr.state_pressed;
+        ColorStateList tint = new ColorStateList(new int[][] { { pressed }, {} },
+                new int[] { Color.RED, Color.BLUE });
+        DrawingRecipe recipe = new DrawingRecipe(ShapeSpec.rectangle(), FillSpec.solid(Color.WHITE),
+                null, LayoutMetrics.unspecified());
+        RecipeDrawable first = new RecipeDrawable(recipe, 1f);
+        RecipeDrawable second = new RecipeDrawable(recipe, 1f);
+        first.setBounds(4, 5, 24, 25); second.setBounds(4, 5, 24, 25);
+        first.setTintList(tint); second.setTintList(tint);
+        first.setColorFilter(new PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN));
+        first.setState(new int[] { pressed });
+        check(bitmap(first).getPixel(10, 10) == Color.GREEN, "explicit filter retains precedence across state change");
+        first.setColorFilter(null);
+        check(bitmap(first).getPixel(10, 10) == Color.RED, "clearing filter restores current state tint");
+        check(bitmap(second).getPixel(10, 10) == Color.BLUE, "tint and state isolated across owners");
+        CallbackProbe callback = new CallbackProbe(); first.setCallback(callback);
+        check(!first.setState(new int[] { pressed }) && callback.invalidations == 0,
+                "same state does not invalidate");
+        first.setAlpha(0);
+        check(Color.alpha(bitmap(first).getPixel(10, 10)) == 0, "zero alpha");
+        check(bitmap(second).getPixel(10, 10) == Color.BLUE, "alpha isolated across owners");
+    }
+
+    private void boundsAndMetricsEdges() {
+        RecipeDrawable d = drawable(ShapeSpec.rectangle(), FillSpec.solid(Color.RED), null,
+                LayoutMetrics.unspecified());
+        Rect padding = new Rect(9, 9, 9, 9);
+        check(!d.getPadding(padding) && padding.equals(new Rect()), "absent padding clears output");
+        d.setBounds(0, 0, 0, 0);
+        check(bitmap(d).getPixel(10, 10) == Color.TRANSPARENT, "empty bounds do not draw");
+        d.setBounds(4, 5, 24, 25);
+        check(bitmap(d).getPixel(10, 10) == Color.RED, "nonempty bounds restore drawing");
+        RecipeDrawable wide = new RecipeDrawable(new DrawingRecipe(ShapeSpec.rectangle(), FillSpec.solid(Color.RED),
+                new StrokeSpec(Length.px(20), Color.TRANSPARENT), LayoutMetrics.unspecified()), 1f);
+        boolean rejected = false;
+        try { wide.setBounds(4, 5, 24, 25); } catch (IllegalArgumentException expected) { rejected = true; }
+        check(rejected, "excessive stroke rejected in bounds preparation");
+        wide.setBounds(0, 0, 30, 30);
+        check(bitmap(wide).getPixel(15, 15) == Color.RED, "valid bounds recover after rejected stroke");
+    }
+
+    private static boolean equalPixels(Bitmap a, Bitmap b) {
+        if (a.getWidth() != b.getWidth() || a.getHeight() != b.getHeight()) return false;
+        for (int y = 0; y < a.getHeight(); y++) {
+            for (int x = 0; x < a.getWidth(); x++) {
+                if (a.getPixel(x, y) != b.getPixel(x, y)) return false;
+            }
+        }
+        return true;
     }
     private void check(boolean ok, String what) { checks++; if (!ok) throw new AssertionError(what); }
 

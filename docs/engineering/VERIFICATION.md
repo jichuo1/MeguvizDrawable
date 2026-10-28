@@ -28,3 +28,12 @@ adb -s <device> shell am instrument -w -r io.github.jichuo1.meguviz.drawable.con
 ```
 
 性能模式在组件名前添加 `-e mode benchmark`，应启动多个独立进程，并保留每次原始输出和 PID。设备差异、构建模式、基线实现及热身方式均应随结果记录。
+
+## 发布候选与扩展设备验证，2026-10-28
+
+- 同一测试 APK 在 API 34 模拟器和 API 37 真机上各通过 45 项软件 Canvas 合同，增加透明渐变及 alpha、非对称圆角变换、滤镜与 tint、实例隔离和错误恢复覆盖。硬件 Canvas 和其他 API 仍未验证。
+- 本地隔离 Maven 仓库的 `0.1.0-dev.1` 候选由独立 Gradle 根目录 `fixtures/consumer` 消费，不使用 project 依赖或 composite 替换。Gradle metadata 和 Maven POM 两条解析路径都检查了解析字节与候选一致；releaseRuntimeClasspath 仅包括本库 Android 和 core，release 消费者完成 R8 构建。当前不代表制品已公开发行。
+- 初版候选元数据曾意外包含 Kotlin 标准库，已保留本地失败证据；仅有 Java 生产源码的当前配置已禁用自动注入，重新生成的 Android 候选只声明本库 core 依赖。
+- 从候选 JAR 和 AAR 生成首版 [ABI 清单](../abi/README.md)，分别覆盖 17 个和 1 个公开或受保护类。首版无历史版本，不声称旧二进制兼容。
+
+候选 JAR SHA-256：`2961dd24009c266021fc70e038275e3c7e127032b4718bb1ff58faecf9bb4ee8`；候选 AAR SHA-256：`7fb6f48b7a1bf209f4ad6fdcd8b6ef73a82c07caa6570fe8234a4bda0f0fd849`。结果只绑定这些候选字节；若重新生成制品导致摘要变化，必须重新验证。完整构建与测试原始日志保留在本地。

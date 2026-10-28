@@ -1,6 +1,9 @@
 plugins {
     `java-library`
+    `maven-publish`
 }
+
+version = "0.1.0-dev.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -25,4 +28,19 @@ tasks.test {
 
 tasks.check {
     dependsOn(contractTest)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("candidate") {
+            artifactId = "meguviz-drawable-core"
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            name = "staging"
+            url = rootProject.layout.buildDirectory.dir("staging-maven").get().asFile.toURI()
+        }
+    }
 }
