@@ -21,6 +21,15 @@ not tint, stroke, outline, dynamic metrics or arbitrary path commands.
 clearing a null tint or tint mode is a no-op. The API 29 `setTintBlendMode`
 path remains unverified and is not part of the supported contract.
 
+Beyond the cut-corner example, `RangeLimitedCutProvider` reports an out-of-range
+cut as `ShapeUnsupportedException` and `RectangleProvider` is a parameterless
+fallback. The contracts register them with declared required capabilities and
+named fallbacks, check `prepareWithFallback` (including that malformed output
+of the original provider is never masked), registry derivation with
+`toBuilder()`/`unregister`, and run `ShapeProviderConformance` against each
+provider. The instrumentation draws the fallback plans through the Android
+host's registry builder.
+
 First stage both candidate modules, then build and execute the independent
 contracts (PowerShell requires quoted dotted properties):
 

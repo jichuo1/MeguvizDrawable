@@ -49,5 +49,5 @@ tr -d '\r' < verification/api/wrapper-result.log | grep -x 'INSTRUMENTATION_CODE
 install_and_verify "$provider_package" verification/api/provider-app.apk provider-app
 install_and_verify "$provider_test_package" verification/api/provider-test.apk provider-test
 adb shell am instrument -w -r "$provider_test_package/example.provider.app.ProviderInstrumentation" | tee verification/api/provider-result.log
-tr -d '\r' < verification/api/provider-result.log | grep -x 'PROVIDER PASS: cut geometry, software Canvas, owner isolation, tint rejection' > /dev/null
+tr -d '\r' < verification/api/provider-result.log | grep -x 'PROVIDER PASS: cut geometry, software Canvas, owner isolation, tint rejection, capability gating and named fallbacks' > /dev/null
 tr -d '\r' < verification/api/provider-result.log | grep -x 'INSTRUMENTATION_CODE: -1' > /dev/null
