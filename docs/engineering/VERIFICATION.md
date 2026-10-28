@@ -93,5 +93,6 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
 - API 34 模拟器单台，针对最终字节：基础库 52 项合同与 29 项绑定合同；Compose 89 项（含 PixelCopy 硬件窗口对照）；
   MeguvizAndroid 桥在真实 `MainThreadDispatcher`/`ChoreographerDriver`/`ResourceScope` 上 17 项；Lumen 45 项；MeguvizUI 58 项。
   每个桥都做过一次删除关键逻辑的变异，合同随之失败，已还原。
+- 可复现性：`.gitattributes` 把 `LICENSE`、`*.java`、`*.kt` 固定为 LF（它们被原样打进 `META-INF/LICENSE` 与 `-sources.jar`）。此后在本机工作树与全新 `git clone` 中分别构建，六个模块的全部制品（jar/aar、sources、javadoc、POM、Gradle metadata）逐字节一致；此前一次对照暴露了换行符与残留空目录造成的差异，已修正。
 - 独立 consumer 与 provider fixture 针对新 core 字节重新通过（两条解析路径、R8 release、`ProviderContract` 38 项）。
 - 未验证：API 23–33 上的桥、物理设备（本轮未连接）、R8 后的桥行为、独立 consumer 对桥制品的消费、Lumen 的其他版本。

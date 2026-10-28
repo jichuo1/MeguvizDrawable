@@ -23,6 +23,8 @@ python tools/verify_central_bundle.py build/central/meguviz-drawable-<版本>-ce
 
 ## 上传前自查
 
+- 在另一台机器或全新 clone 中构建应得到相同的制品字节（`.gitattributes` 固定了被打包文本的换行符）；两处 SHA-256 不一致说明输入不同，不要上传。
+
 - 构建内容变化后须重新生成并重验：`docs/engineering/VERIFICATION.md` 中的 SHA-256 只绑定当时的字节。
 - `docs/abi/<版本>/` 与独立 consumer/provider fixture 用同一份 staging 候选生成。
 - 版本号不等于成熟度：对外声明的稳定范围以 `STATUS.md` 与 README 为准。
