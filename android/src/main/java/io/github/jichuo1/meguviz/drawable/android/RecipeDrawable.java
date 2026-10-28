@@ -25,6 +25,8 @@ import io.github.jichuo1.meguviz.drawable.model.Length;
 import io.github.jichuo1.meguviz.drawable.model.ShapeSpec;
 import io.github.jichuo1.meguviz.drawable.model.StrokeSpec;
 
+import java.util.Arrays;
+
 /** A static, software-capable Drawable for built-in shapes. Instances must not be shared by owners. */
 public final class RecipeDrawable extends Drawable {
     private final DrawingRecipe recipe;
@@ -187,8 +189,11 @@ public final class RecipeDrawable extends Drawable {
     /** Copies caller input before the framework stores or compares it. */
     @Override public boolean setState(int[] stateSet) {
         if (stateSet == null) throw new NullPointerException("stateSet");
+        if (Arrays.equals(super.getState(), stateSet)) return false;
         return super.setState(stateSet.clone());
     }
+    /** The framework retains its state array, so never expose that array to callers. */
+    @Override public int[] getState() { return super.getState().clone(); }
     @Override protected boolean onStateChange(int[] state) {
         int previousFill = fillPaint.getColor();
         boolean tintChanged = false;
@@ -206,7 +211,7 @@ public final class RecipeDrawable extends Drawable {
         return changed;
     }
     private void updateTint() {
-        tintColor = tint == null ? 0 : tint.getColorForState(getState(), tint.getDefaultColor());
+        tintColor = tint == null ? 0 : tint.getColorForState(super.getState(), tint.getDefaultColor());
         tintFilter = tint == null || tintMode == null ? null : new PorterDuffColorFilter(tintColor, tintMode);
         updateAppearance();
     }
@@ -216,7 +221,7 @@ public final class RecipeDrawable extends Drawable {
         if (fill.kind() == FillSpec.Kind.SOLID) {
             fillColor = fill.color();
         } else if (fill.kind() == FillSpec.Kind.STATEFUL_SOLID) {
-            int index = StateMatcher.matchIndex(fill.stateColors(), getState());
+            int index = StateMatcher.matchIndex(fill.stateColors(), super.getState());
             fillColor = index < 0 ? fill.fallbackColor() : fill.stateColors().colorAt(index);
         } else {
             fillColor = Color.WHITE;

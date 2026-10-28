@@ -14,6 +14,7 @@ public final class CoreContractTest {
         immutabilityAndOrdering();
         stateCorpus();
         geometry();
+        checks += CoreAdditionalContractTest.run();
         System.out.println("CoreContractTest: " + checks + " checks passed");
     }
 
