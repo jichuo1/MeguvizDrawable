@@ -1,14 +1,17 @@
 plugins {
     `java-library`
     `maven-publish`
+    signing
 }
 
-version = "0.1.0-dev.4"
+version = "1.0.0"
+description = "Immutable drawing recipes, state compilation and slot ownership for Android drawables (pure Java core)."
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
+    withJavadocJar()
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -61,3 +64,5 @@ publishing {
         }
     }
 }
+
+apply(from = rootProject.file("gradle/central-publishing.gradle.kts"))

@@ -1,9 +1,11 @@
 plugins {
     id("com.android.library")
     `maven-publish`
+    signing
 }
 
-version = "0.1.0-dev.4"
+version = "1.0.0"
+description = "Android Drawable implementation and View binding adapters built on meguviz-drawable-core."
 
 android {
     namespace = "io.github.jichuo1.meguviz.drawable.android"
@@ -17,7 +19,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    publishing { singleVariant("release") { withSourcesJar() } }
+    publishing { singleVariant("release") { withSourcesJar(); withJavadocJar() } }
 }
 
 dependencies {
@@ -54,3 +56,5 @@ afterEvaluate {
         }
     }
 }
+
+apply(from = rootProject.file("gradle/central-publishing.gradle.kts"))

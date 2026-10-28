@@ -69,5 +69,14 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
 - 宿主 JVM：`gradlew --offline --no-daemon -Pmeguviz.profile=android --rerun-tasks check` 退出 0，`CoreContractTest` 20,221 项通过（含新增绑定与扩展合同），Android lint 随 `check` 通过。
 - API 34 模拟器单台：同一测试 APK 的 `binding` 模式 29 项、`contracts` 52 项、`wrapper` 37 项、`protocol` 22 项通过。`binding` 模式包含 View 背景所有权、宿主替换后不覆盖、PRESERVE_HOST 内边距、Activity 内 attach/detach/reattach 与迟到结果、回退后的多边形像素。
 - 审查中发现并修复：`ensure` 在工厂执行后未复核槽位；环境 A→B→A 使旧结果重新有效（现以变更计数区分）；释放回调在不可重入段内执行；绝对内边距被恢复为相对内边距；一致性检查在工作线程失败时挂起或空指针，并对非捕获 lambda 误报。
-- 未验证：API 21/22/37、硬件窗口、RTL 布局；`docs/abi` 未重新生成；独立 consumer/provider fixture 仍固定旧候选，未覆盖新增 API。核心与 Android 字节已变化而版本仍为 `0.1.0-dev.4`，此前绑定到 dev.4 SHA-256 的证据不适用于当前源码，发布前须升版本并重新生成候选、ABI 与消费者证据。
+- 未验证：API 21/22/37、硬件窗口、RTL 布局；`docs/abi` 未重新生成；独立 consumer/provider fixture 仍固定旧候选，未覆盖新增 API。核心与 Android 字节相对 `0.1.0-dev.4` 已变化，此前绑定到 dev.4 SHA-256 的证据不适用于当前源码；已升到 `1.0.0` 并重新取证，见下一节。
 - 仍未实现：计划 C07 中的共享策略、outline/外扩/离屏声明；后台准备的调度器（`commit` 只负责校验与安装）；FillProvider、EffectProvider、BackendProvider；Compose、Meguviz、Lumen 适配。
+
+## 1.0.0 候选与 Central 上传包，2026-10-28
+
+- 版本从 `0.1.0-dev.4` 改为 `1.0.0`（core、android、独立 consumer/provider fixture、辅助脚本）。`benchmark/page` 仍固定 `dev.3`，因为它记录的是该候选的历史基线。
+- staging 候选：core JAR SHA-256 `6115921e7289196c084e2d82185a71f448716e75c0d9bfe42c1987e9fba53a37`；Android AAR SHA-256 `e9a74e017fcf0e46cee7593694aea639d316339a03b84a47d4e51baec6c4b0ac`。
+- 独立 consumer：Gradle metadata 与 POM 两条解析路径的 `verifyCandidateResolution` 和 R8 `assembleRelease` 通过，解析字节与上述 SHA-256 一致。独立 provider：`ProviderContract` 22 项、两条解析路径、R8 release 与 `assembleDebugAndroidTest` 通过。该 fixture 未覆盖本次新增的能力/回退/一致性 API，设备侧也未重跑。
+- ABI：`docs/abi/1.0.0/` 为新基线；与 `0.1.0-dev.4` 的 API 文本相比只有新增，没有删除或改签名。这只是文本比较，不是旧字节码不重编译运行的兼容证明。
+- Central 上传包：`gradlew -Pmeguviz.profile=android -Pmeguviz.sign=true centralBundle` 生成 `build/central/meguviz-drawable-1.0.0-central-bundle.zip`（60 个文件，core 与 android 各含主制品、POM、Gradle metadata、sources 与 javadoc jar，每个都有 `.asc`、`.md5`、`.sha1`、`.sha256`、`.sha512`）。`tools/verify_central_bundle.py` 逐项核对签名（gpg）、校验和、POM 必填字段与文件齐全，结果 PASS。签名密钥公钥已能在 keyserver.ubuntu.com 取到；命名空间 `io.github.jichuo1` 是否已在 Central Portal 验证、以及上传本身，都未在此验证。
+- 版本号 `1.0.0` 不改变 API 的实际成熟度：provider SPI 仍标为实验性，`README.md` 仍写 API provisional，G0–G6 门禁未通过，见 `STATUS.md`。
