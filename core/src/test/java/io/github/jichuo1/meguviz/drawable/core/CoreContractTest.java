@@ -15,6 +15,7 @@ public final class CoreContractTest {
         stateCorpus();
         geometry();
         checks += CoreAdditionalContractTest.run();
+        checks += BindingContractTest.run();
         System.out.println("CoreContractTest: " + checks + " checks passed");
     }
 
