@@ -53,3 +53,10 @@ jobs:
         run: bash gradlew -p fixtures/consumer --no-daemon :app:assembleRelease :app:verifyCandidateResolution
       - name: Check Maven POM resolution
         run: bash gradlew -p fixtures/consumer -Pconsumer.metadata=pom --no-daemon :app:verifyCandidateResolution
+      - name: Verify independent provider and R8
+        run: >-
+          bash gradlew -p fixtures/provider --no-daemon
+          :provider:check :app:verifyCandidateResolution
+          :app:assembleRelease :app:assembleDebugAndroidTest
+      - name: Check provider Maven POM resolution
+        run: bash gradlew -p fixtures/provider -Pprovider.metadata=pom --no-daemon :app:verifyCandidateResolution

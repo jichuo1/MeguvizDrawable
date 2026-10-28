@@ -27,3 +27,8 @@ release. A future compatibility claim also needs old consumer binaries built
 against the earlier artifact and run without recompilation on the new one.
 This Java-level dump does not validate Kotlin metadata, runtime behavior,
 Android API availability, shrinking or dynamic providers.
+
+`0.1.0-dev.2/` is a separate later candidate snapshot. Preserve the earlier
+directory instead of replacing it. The frozen `fixtures/abi/LegacyCoreClient`
+exercises a small old core API subset without recompiling; it is not an
+exhaustive compatibility guarantee.

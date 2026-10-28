@@ -3,7 +3,7 @@ plugins {
     `maven-publish`
 }
 
-version = "0.1.0-dev.1"
+version = "0.1.0-dev.2"
 
 android {
     namespace = "io.github.jichuo1.meguviz.drawable.android"

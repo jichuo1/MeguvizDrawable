@@ -2,6 +2,7 @@ package io.github.jichuo1.meguviz.drawable.android.test;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -21,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import io.github.jichuo1.meguviz.drawable.android.RecipeDrawable;
 import io.github.jichuo1.meguviz.drawable.model.DrawingRecipe;
 import io.github.jichuo1.meguviz.drawable.model.FillSpec;
@@ -60,6 +62,7 @@ public final class ContractInstrumentation extends Instrumentation {
             asymmetricGeometryReference();
             statefulTintAndOwnership();
             boundsAndMetricsEdges();
+            if ("hardware".equals(mode)) hardwareCanvasReference();
             result.putString("stream", "\nCONTRACT PASS checks=" + checks + "\n");
             result.putInt("checks", checks);
             finish(Activity.RESULT_OK, result);
@@ -281,6 +284,64 @@ public final class ContractInstrumentation extends Instrumentation {
         check(rejected, "excessive stroke rejected in bounds preparation");
         wide.setBounds(0, 0, 30, 30);
         check(bitmap(wide).getPixel(15, 15) == Color.RED, "valid bounds recover after rejected stroke");
+    }
+
+    /** Draw and compare candidate/reference on a real hardware-accelerated window. */
+    private void hardwareCanvasReference() throws Exception {
+        if (android.os.Build.VERSION.SDK_INT < 26) {
+            throw new UnsupportedOperationException("hardware window capture requires API 26+");
+        }
+        Intent intent = new Intent(getTargetContext(), HardwareProbeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        HardwareProbeActivity activity = (HardwareProbeActivity) startActivitySync(intent);
+        try {
+            check(activity.drawn.await(10, TimeUnit.SECONDS), "hardware fixture draw completed");
+            check(activity.hardwareCanvas, "fixture Canvas is hardware accelerated");
+            check(activity.viewWidth >= 220 && activity.viewHeight >= 100, "hardware fixture is visible");
+            waitForIdleSync();
+            boolean matched = false;
+            int lastDifferences = -1;
+            int lastActual = 0;
+            int lastExpected = 0;
+            int lastX = -1, lastY = -1, lastMaxDelta = 0;
+            // onDraw may precede display presentation; bound the wait and inspect only our fixture.
+            for (int attempt = 0; attempt < 30 && !matched; attempt++) {
+                Bitmap screenshot = HardwareCaptureApi26.capture(activity);
+                if (screenshot != null) {
+                    int differences = 0;
+                    int maxDelta = 0;
+                    for (int y = 21; y < 99; y++) {
+                        for (int x = 21; x < 99; x++) {
+                            int actual = screenshot.getPixel(x, y);
+                            int expected = screenshot.getPixel(x + 120, y);
+                            if (actual != expected) {
+                                if (differences == 0) {
+                                    lastActual = actual; lastExpected = expected; lastX = x; lastY = y;
+                                }
+                                maxDelta = Math.max(maxDelta, Math.abs(Color.alpha(actual) - Color.alpha(expected)));
+                                maxDelta = Math.max(maxDelta, Math.abs(Color.red(actual) - Color.red(expected)));
+                                maxDelta = Math.max(maxDelta, Math.abs(Color.green(actual) - Color.green(expected)));
+                                maxDelta = Math.max(maxDelta, Math.abs(Color.blue(actual) - Color.blue(expected)));
+                                differences++;
+                            }
+                        }
+                    }
+                    lastDifferences = differences;
+                    lastMaxDelta = maxDelta;
+                    // Prevent an undrawn, uniformly white screen from passing the comparison.
+                    matched = differences == 0
+                            && screenshot.getPixel(22, 50) != Color.WHITE;
+                    screenshot.recycle();
+                }
+                if (!matched) Thread.sleep(100);
+            }
+            check(matched, "hardware screenshot matches platform shader reference: differences="
+                    + lastDifferences + " first=" + Integer.toHexString(lastActual)
+                    + "/" + Integer.toHexString(lastExpected) + " x=" + lastX + " y=" + lastY
+                    + " max_channel_delta=" + lastMaxDelta);
+        } finally {
+            runOnMainSync(new Runnable() { @Override public void run() { activity.finish(); } });
+        }
     }
 
     private static boolean equalPixels(Bitmap a, Bitmap b) {

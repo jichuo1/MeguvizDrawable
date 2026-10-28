@@ -1,0 +1,32 @@
+diff --git a/Bilibili_Innocent_Lab/gradle/libs.versions.toml b/Bilibili_Innocent_Lab/gradle/libs.versions.toml
+index 4273fe8..4652dee 100644
+--- a/Bilibili_Innocent_Lab/gradle/libs.versions.toml
++++ b/Bilibili_Innocent_Lab/gradle/libs.versions.toml
+@@ -9,7 +9,6 @@ betterandroid-ui-component-adapter = "1.1.6"
+ betterandroid-ui-extension = "1.1.6"
+ betterandroid-system-extension = "1.1.6"
+ dexkit = "2.3.0"
+-drawabletoolbox = "1.0.7"
+ m3color = "2026.1"
+ androidx-core-ktx = "1.19.1"
+ androidx-appcompat = "1.8.0"
+@@ -39,7 +38,6 @@ betterandroid-ui-component = { group = "com.highcapable.betterandroid", name = "
+ betterandroid-ui-component-adapter = { group = "com.highcapable.betterandroid", name = "ui-component-adapter", version.ref = "betterandroid-ui-component-adapter" }
+ betterandroid-ui-extension = { group = "com.highcapable.betterandroid", name = "ui-extension", version.ref = "betterandroid-ui-extension" }
+ betterandroid-system-extension = { group = "com.highcapable.betterandroid", name = "system-extension", version.ref = "betterandroid-system-extension" }
+-drawabletoolbox = { group = "com.github.duanhong169", name = "drawabletoolbox", version.ref = "drawabletoolbox" }
+ m3color = { group = "com.github.Kyant0", name = "m3color", version.ref = "m3color" }
+ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+diff --git a/Bilibili_Innocent_Lab/app/build.gradle.kts b/Bilibili_Innocent_Lab/app/build.gradle.kts
+index 3b75de9..14c3465 100644
+--- a/Bilibili_Innocent_Lab/app/build.gradle.kts
++++ b/Bilibili_Innocent_Lab/app/build.gradle.kts
+@@ -574,7 +574,6 @@ dependencies {
+     implementation(libs.betterandroid.ui.extension)
+     implementation(libs.betterandroid.system.extension)
+ 
+-    implementation(libs.drawabletoolbox)
+ 
+     // Material You / Monet 动态取色（GitHub: Kyant0/m3color，material-color-utilities 的 Java 端口）
+     implementation(libs.m3color)

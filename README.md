@@ -21,6 +21,11 @@ represent the requested stroke or gradient are rejected during preparation.
 More complex paths, dynamic metrics, adapters and published coordinates are
 still pending.
 
+An experimental, explicitly registered shape-provider API supports bounded
+closed polygons through a separate Android drawable. Its supported operations
+and independent consumer fixture are described in
+[fixtures/provider](fixtures/provider/README.md); this API is not yet stable.
+
 See [engineering status](docs/engineering/STATUS.md) and
 [baseline](docs/engineering/BASELINE.md) for current progress and limits;
 [verification](docs/engineering/VERIFICATION.md) records the initial check.
