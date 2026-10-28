@@ -44,14 +44,7 @@ jobs:
           target: default
           arch: x86
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          script: |
-            set -euo pipefail
-            test "$(adb shell getprop ro.build.version.sdk | tr -d '\r')" = "${{ matrix.api }}"
-            test -z "$(adb shell pm list packages io.github.jichuo1.meguviz.drawable.contracttest | tr -d '\r')"
-            adb install android/build/outputs/apk/androidTest/debug/android-debug-androidTest.apk | tee verification/api/install.log
-            adb shell am instrument -w -r io.github.jichuo1.meguviz.drawable.contracttest/io.github.jichuo1.meguviz.drawable.android.test.ContractInstrumentation | tee verification/api/result.log
-            tr -d '\r' < verification/api/result.log | grep -qx 'CONTRACT PASS checks=52'
-            grep -q 'INSTRUMENTATION_CODE: -1' verification/api/result.log
+          script: bash tools/run-api-contracts.sh ${{ matrix.api }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
