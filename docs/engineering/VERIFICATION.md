@@ -42,7 +42,7 @@ adb -s <device> shell am instrument -w -r io.github.jichuo1.meguviz.drawable.con
 
 - `0.1.0-dev.2` 引入实验性闭合多边形 provider：冷路径显式注册、版本/依赖/顶点预算校验及独立 Android 绘制入口；不扩展 `RecipeDrawable`，也不宣称实现完整 SPI 或 tint 协议。独立 provider 的 22 项宿主合同、metadata/POM 两种解析和 R8 release 构建通过；API 37 真机上的 debug fixture 验证软件绘制与 owner 隔离，不能称为 R8 设备运行。
 - 先前 `0.1.0-dev.1` 编译并冻结的有限 Java consumer 字节码，不重编译即可在 dev.2 core 上运行；旧 core 的 17 个公开/受保护类 API 文本均与新清单一致。该证据只覆盖此 fixture 和清单，不代表任意历史消费者或 Android ABI 已验证。
-- API 21/22 云端模拟器在提交 `2f4101a` 上各通过 52 项软件合同，实际源码摘要与 API 37 硬件测试中对应的生产源码一致。首次运行因 shell 不兼容在测试前失败，后续 API 22 一次模拟器下载损坏未执行测试；原始失败和成功重试均保留。
+- API 21/22 云端模拟器在提交 `48999e0` 上各通过 52 项软件合同和独立 provider 合同；构建和设备回读的三个 APK 均逐字节一致，debug/release 依赖解析均核对了实际 staging 制品。受测源码摘要与本机测试一致。首次运行因 shell 不兼容在测试前失败，后续 API 22 一次模拟器下载损坏未执行测试；原始失败和成功重试均保留。
 - API 37 真机的测试 APK 在硬件加速窗口内对照四个场景：渐变 6,084 像素、不对称圆角 6,400 像素、checked/alpha 128 与 selected/alpha 255 各 6,400 像素，均与平台参考逐像素一致。初次全屏截图对照失败并已保留；后续使用测试窗口 PixelCopy，未放宽容差。不能由此推断所有硬件、GPU 或绘制效果均通过。
 
 dev.2 候选 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031a352c9ba`；Android AAR SHA-256 `48ad5815a27ea0e2844a5bc50cdc869d3a6963ea17735a5db47e28353be6424f`。若这些字节改变，相关消费者和 ABI 证据需重新核验。
