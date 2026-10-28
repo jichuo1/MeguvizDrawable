@@ -60,3 +60,5 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
 `dev.4` 新增外部 child 的单 owner 包装器，处理回调解绑、来源校验、调度取消、状态与可见性。普通 consumer 和 provider 的 metadata/POM 解析、R8 构建通过；[API 21/22 模拟器矩阵](https://github.com/jichuo1/MeguvizDrawable/actions/runs/40692606779) 各通过 36 项包装器合同、52 项基础合同、22 项快照协议和 provider 合同，安装 APK 与构建字节一致；API 34 只读模拟器另通过 37 项包装器合同。调度型 child 必须先绑定宿主 callback，再安装到空包装器；宿主替换 callback 前须先隐藏或关闭包装器。API 29 BlendMode tint 不转发，此入口不声称与任意平台 wrapper 完全等价；真机验证待完成。
 
 独立 View 页面的确认实验在预先提交的 `benchmark/page/CONFIRMATION.md` 协议下进行：API 37 单设备、约 120 Hz、release/R8、64 个 View，每帧人为重复 512 次相同状态更新，30 对 AB/BA 独立进程。逐 run 帧耗 p95 的配对差（候选减基线）中位数为 -0.0758 ms，按配对块重采样的探索性 95% 区间为 [-0.5091, +0.0168] ms；在该实验与统计假设下满足预注册的 0.5 ms 非劣化判据，但未证明至少 0.2 ms 的帧耗收益。软件位图预检一致、窗口为硬件加速且未丢帧指标回调；这不证明硬件像素等价，也不能推断 BIL 真实页面或其他设备的收益。完整 run 日志和原始数据保留在本地。
+
+用户自行打开并滚动已安装的既有 BIL 版本后，另以不重置、不注入输入的方式读取了前后 `gfxinfo framestats`；两次进程与安装 APK 摘要一致。环形缓冲各保留 120 条且无重叠，已覆盖部分区间，因此无法还原整个滚动过程。后一次保留数据中，107 条未标记且时间字段有效的帧，其 `FrameCompleted - IntendedVsync` 中位数为 13.542 ms、最近秩 p95 为 17.017 ms；这些是约 1.24 秒范围内的有限近期帧，不能确定全部属于滚动，也不能作为完整 run、卡顿率或候选 A/B 收益。该安装版本不是当前 Advanced 候选，原始记录仅保留在本地。
