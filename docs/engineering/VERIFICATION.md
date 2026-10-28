@@ -47,12 +47,14 @@ adb -s <device> shell am instrument -w -r io.github.jichuo1.meguviz.drawable.con
 
 dev.2 候选 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031a352c9ba`；Android AAR SHA-256 `48ad5815a27ea0e2844a5bc50cdc869d3a6963ea17735a5db47e28353be6424f`。若这些字节改变，相关消费者和 ABI 证据需重新核验。
 
-独立 provider 的 R8 应用使用调试签名副本，在 API 37 设备上通过黑盒 instrumentation 的四点屏幕采样。原 debug instrumentation 直接链接未混淆类名，在 R8 目标上以 `NoClassDefFoundError` 失败，该失败保留；黑盒结果不替代原合同或完整像素对照。BIL 依赖退出见 [隔离补丁与草稿 PR](../../integration/bil/README.md)，尚未合入 BIL 主分支或完成正式 release APK、Hook 和 UI 验证。
+独立 provider 的 R8 应用使用调试签名副本，在 API 37 设备上通过黑盒 instrumentation 的四点屏幕采样。原 debug instrumentation 直接链接未混淆类名，在 R8 目标上以 `NoClassDefFoundError` 失败，该失败保留；黑盒结果不替代原合同或完整像素对照。BIL 依赖退出见 [隔离补丁与 PR](../../integration/bil/README.md)，已合入 `Advanced`，尚未合入 BIL `main` 或完成正式 release APK、Hook 和 UI 验证。
 
 ## Drawable 协议候选，2026-10-28
 
 - `0.1.0-dev.3` 对静态、无 tint 和外部滤镜的 `RecipeDrawable` 提供可重建的 `ConstantState`；实例各自持有绘制和运行状态。存在 tint 或显式滤镜时保守返回 `null`。API 37 真机协议模式通过 22 项检查，原软件合同 52 项及硬件合同 60 项通过。
-- 对新候选重新构建 core/Android、独立消费者及 provider；Gradle metadata、POM、强制 R8 构建和许可证检查通过。API 21/22 对本候选的重跑仍待执行，不能沿用 dev.2 结果。
-- `Advanced` 已非强制快进到 BIL 基线，PR #39 已改为以 `Advanced` 为目标；合并及该分支最终 CI 尚待确认。BIL 候选隔离快照的 testDebugUnitTest 共 4,116 项、1 跳过、0 失败/错误；lint 未发现有效新增错误。固定签名 release APK、实际 Hook 和真实页面仍缺证据。
+- 对新候选重新构建 core/Android、独立消费者及 provider；Gradle metadata、POM、强制 R8 构建和许可证检查通过。API 21/22 对提交 `9965c3c` 的独立矩阵各通过软件 52 项、快照协议 22 项及 provider 合同，构建与设备回读 APK 字节一致；[原始运行](https://github.com/jichuo1/MeguvizDrawable/actions/runs/40688326056)。
+- `Advanced` 已非强制快进到 BIL 基线，PR #39 已合并，合并树与隔离验证候选一致；合并提交的 [Advanced CI](https://github.com/jichuo1/Bilibili_Innocent_Lab/actions/runs/40688542546) 通过。BIL 候选隔离快照的 testDebugUnitTest 共 4,116 项、1 跳过、0 失败/错误；lint 未发现有效新增错误。隔离的基线和候选控件 fixture 在 API 37 真机分别通过构造、测量、attach、状态、整行 Ripple、点击及拒绝回滚合同，控件位图和指标摘要一致。fixture 使用唯一包名及中性 Application，不覆盖已安装模块；固定签名 release APK、实际 Hook 和真实页面仍缺证据。
 
 dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031a352c9ba`；Android AAR SHA-256 `8335d055955304e1dab311a505a236860a5d849ec48db05e0a9970c2ef07260f`。这些结果仅绑定上述候选字节。
+
+独立 View 页面的确认实验在预先提交的 `benchmark/page/CONFIRMATION.md` 协议下进行：API 37 单设备、约 120 Hz、release/R8、64 个 View，每帧人为重复 512 次相同状态更新，30 对 AB/BA 独立进程。逐 run 帧耗 p95 的配对差（候选减基线）中位数为 -0.0758 ms，按配对块重采样的探索性 95% 区间为 [-0.5091, +0.0168] ms；在该实验与统计假设下满足预注册的 0.5 ms 非劣化判据，但未证明至少 0.2 ms 的帧耗收益。软件位图预检一致、窗口为硬件加速且未丢帧指标回调；这不证明硬件像素等价，也不能推断 BIL 真实页面或其他设备的收益。完整 run 日志和原始数据保留在本地。

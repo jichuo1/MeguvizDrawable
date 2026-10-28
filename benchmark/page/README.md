@@ -25,3 +25,8 @@ installed APKs match the newly built bytes. It never uninstalls or clears data.
 All run logs and device-specific details are written to the locally ignored
 engineering evidence directory. This is an exploratory pilot; publication
 requires a separately frozen confirmation protocol and independent samples.
+
+For the separately registered 30-pair confirmation, use `-Phase confirmation`
+and summarize with `python benchmark/page/analyze.py <directory> --phase confirmation`.
+See [CONFIRMATION.md](CONFIRMATION.md) for stopping conditions, thresholds and
+statistical limitations.
