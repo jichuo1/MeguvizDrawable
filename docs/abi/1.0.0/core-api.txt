@@ -54,6 +54,9 @@ public final class io.github.jichuo1.meguviz.drawable.binding.BindingScope imple
   public <T> io.github.jichuo1.meguviz.drawable.binding.SlotBinding<T> slot(java.lang.String, io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Slot<T>, io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Releaser<T>);
     descriptor: (Ljava/lang/String;Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding$Slot;Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding$Releaser;)Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding;
 
+  public io.github.jichuo1.meguviz.drawable.binding.BindingScope$Claim claim(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/binding/BindingScope$Claim;
+
   public io.github.jichuo1.meguviz.drawable.binding.RequestStamp begin(java.lang.String);
     descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/binding/RequestStamp;
 
@@ -65,6 +68,18 @@ public final class io.github.jichuo1.meguviz.drawable.binding.BindingScope imple
 
   public java.lang.String toString();
     descriptor: ()Ljava/lang/String;
+}
+
+# io.github.jichuo1.meguviz.drawable.binding.BindingScope$Claim (public)
+public final class io.github.jichuo1.meguviz.drawable.binding.BindingScope$Claim implements java.lang.AutoCloseable {
+  public java.lang.String key();
+    descriptor: ()Ljava/lang/String;
+
+  public boolean isReleased();
+    descriptor: ()Z
+
+  public void close();
+    descriptor: ()V
 }
 
 # io.github.jichuo1.meguviz.drawable.binding.BindingScope$CommitOutcome (public)

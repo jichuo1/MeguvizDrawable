@@ -24,6 +24,7 @@ final class BindingContractTest {
         scopeStaleness();
         scopeClose();
         scopeThreading();
+        propertyClaims();
         return checks;
     }
 
@@ -437,6 +438,46 @@ final class BindingContractTest {
                 "commit from a worker is rejected without releasing");
         check(scope.commit(stamp, workerResult, NOOP, COUNT) == CommitOutcome.COMMITTED, "owner thread can still commit");
         scope.close();
+    }
+
+    private static void propertyClaims() {
+        BindingScope scope = new BindingScope(1);
+        scope.bind(ENV);
+        BindingScope.Claim background = scope.claim("background");
+        check("background".equals(background.key()) && !background.isReleased(), "claim reserves the key");
+        fails(IllegalArgumentException.class, () -> scope.claim("background"));
+        fails(IllegalArgumentException.class, () -> scope.slot("background", new Host(), null));
+        scope.slot("foreground", new Host(), null);
+        fails(IllegalArgumentException.class, () -> scope.claim("foreground"));
+        background.close();
+        background.close();
+        check(background.isReleased(), "close releases the claim idempotently");
+        BindingScope.Claim again = scope.claim("background");
+        check(!again.isReleased(), "a released key can be claimed again");
+        scope.slot("late", new Host(), null);
+        fails(IllegalArgumentException.class, () -> scope.claim("late"));
+        for (int i = 0; i < 29; i++) scope.claim("filler" + i);
+        fails(IllegalStateException.class, () -> scope.claim("one-too-many"));
+        again.close();
+        check(scope.claim("one-too-many").key().equals("one-too-many"), "closing a claim frees budget");
+        fails(IllegalArgumentException.class, () -> scope.claim(""));
+        fails(NullPointerException.class, () -> scope.claim(null));
+        scope.close();
+        check(again.isReleased(), "closing the scope releases claims");
+        again.close();
+        fails(IllegalStateException.class, () -> scope.claim("after-close"));
+
+        BindingScope other = new BindingScope(2);
+        other.bind(ENV);
+        BindingScope.Claim foreign = other.claim("p");
+        AtomicReference<Throwable> problem = new AtomicReference<Throwable>();
+        Thread worker = new Thread(() -> {
+            try { foreign.close(); } catch (Throwable error) { problem.set(error); }
+        });
+        worker.start();
+        try { worker.join(); } catch (InterruptedException error) { throw new AssertionError(error); }
+        check(problem.get() instanceof IllegalStateException && !foreign.isReleased(), "claims are owner-thread only");
+        other.close();
     }
 
     private static void fails(Class<? extends Throwable> expected, Runnable action) {

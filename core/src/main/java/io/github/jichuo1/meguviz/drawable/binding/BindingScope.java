@@ -80,7 +80,7 @@ public final class BindingScope implements AutoCloseable {
     private final long ownerEpoch;
     private long environmentVersion;
     private final Map<String, KeyState> requests = new HashMap<String, KeyState>();
-    private final Set<String> slotKeys = new HashSet<String>();
+    private final Set<String> claimedKeys = new HashSet<String>();
     private List<Releasable> resources = new ArrayList<Releasable>();
     private State state = State.CREATED;
     private BindingEnvironment environment;
@@ -200,10 +200,8 @@ public final class BindingScope implements AutoCloseable {
         enter();
         try {
             if (state == State.CLOSED) throw new IllegalStateException("closed");
-            if (slotKeys.contains(key)) throw new IllegalArgumentException("duplicate slot: " + key);
-            if (slotKeys.size() >= MAX_SLOTS) throw new IllegalStateException("slot budget exceeded");
+            reserveKey(key);
             final SlotBinding<T> binding = new SlotBinding<T>(slot, this, releaser);
-            slotKeys.add(key);
             resources.add(new Releasable() {
                 @Override public void release() { binding.close(); }
             });
@@ -211,6 +209,66 @@ public final class BindingScope implements AutoCloseable {
         } finally {
             busy = false;
         }
+    }
+
+    /**
+     * Reserves a property key for an owner that manages the host property itself, for example a
+     * library that installs its own drawable. The key is exclusive with {@link #slot} and other
+     * claims in this scope until the claim is closed or the scope closes, so two owners cannot both
+     * believe they own the same property. Closing the claim does not touch the host property.
+     */
+    public Claim claim(String key) {
+        requireKey(key);
+        enter();
+        try {
+            if (state == State.CLOSED) throw new IllegalStateException("closed");
+            reserveKey(key);
+            final Claim claim = new Claim(key);
+            resources.add(new Releasable() {
+                @Override public void release() { claim.releaseFromScope(); }
+            });
+            return claim;
+        } finally {
+            busy = false;
+        }
+    }
+
+    /** An exclusive reservation made by {@link #claim}. Owner-thread only; closing is idempotent. */
+    public final class Claim implements AutoCloseable {
+        private final String key;
+        private boolean released;
+
+        private Claim(String key) { this.key = key; }
+
+        public String key() { return key; }
+
+        public boolean isReleased() {
+            checkThread();
+            return released;
+        }
+
+        @Override public void close() {
+            checkThread();
+            if (released) return;
+            enter();
+            try {
+                releaseFromScope();
+            } finally {
+                busy = false;
+            }
+        }
+
+        private void releaseFromScope() {
+            if (released) return;
+            released = true;
+            claimedKeys.remove(key);
+        }
+    }
+
+    private void reserveKey(String key) {
+        if (claimedKeys.contains(key)) throw new IllegalArgumentException("key already claimed: " + key);
+        if (claimedKeys.size() >= MAX_SLOTS) throw new IllegalStateException("property budget exceeded");
+        claimedKeys.add(key);
     }
 
     /** Issues a stamp for the latest request of key; requires BOUND. */
