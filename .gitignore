@@ -1,0 +1,12 @@
+.gradle/
+**/build/
+local.properties
+.idea/
+*.iml
+
+# Original engineering inputs and machine-specific evidence stay local.
+docs/engineering/MEGUVIZDRAWABLE_ENGINEERING_PLAN.md
+docs/engineering/MEGUVIZDRAWABLE_PROJECT_PROMPT.md
+docs/engineering/README.md
+docs/engineering/evidence/
+docs/engineering/tools/
