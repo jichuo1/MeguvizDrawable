@@ -62,3 +62,12 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
 独立 View 页面的确认实验在预先提交的 `benchmark/page/CONFIRMATION.md` 协议下进行：API 37 单设备、约 120 Hz、release/R8、64 个 View，每帧人为重复 512 次相同状态更新，30 对 AB/BA 独立进程。逐 run 帧耗 p95 的配对差（候选减基线）中位数为 -0.0758 ms，按配对块重采样的探索性 95% 区间为 [-0.5091, +0.0168] ms；在该实验与统计假设下满足预注册的 0.5 ms 非劣化判据，但未证明至少 0.2 ms 的帧耗收益。软件位图预检一致、窗口为硬件加速且未丢帧指标回调；这不证明硬件像素等价，也不能推断 BIL 真实页面或其他设备的收益。完整 run 日志和原始数据保留在本地。
 
 用户自行打开并滚动已安装的既有 BIL 版本后，另以不重置、不注入输入的方式读取了前后 `gfxinfo framestats`；两次进程与安装 APK 摘要一致。环形缓冲各保留 120 条且无重叠，已覆盖部分区间，因此无法还原整个滚动过程。后一次保留数据中，107 条未标记且时间字段有效的帧，其 `FrameCompleted - IntendedVsync` 中位数为 13.542 ms、最近秩 p95 为 17.017 ms；这些是约 1.24 秒范围内的有限近期帧，不能确定全部属于滚动，也不能作为完整 run、卡顿率或候选 A/B 收益。该安装版本不是当前 Advanced 候选，原始记录仅保留在本地。
+
+## 绑定所有权与 Provider 扩展，2026-10-28（未提交，工作树）
+
+- 新增：`SlotBinding` 的幂等 `ensure`、`takeOver` 显式重绑、spec/revision/owner token 记录与释放；`BindingScope`（生命周期、绑定代次、按 key 的最新请求有效、校验与安装不可穿插的 `commit`）；`ViewSlots` 与 `ViewLifecycleBinder`（View 背景/前景槽位、attach/detach 映射到 suspend/resume）；SPI 的能力声明、命名回退、`ShapeProviderRegistry.toBuilder()`/`unregister`、`ShapeProviderConformance`。
+- 宿主 JVM：`gradlew --offline --no-daemon -Pmeguviz.profile=android --rerun-tasks check` 退出 0，`CoreContractTest` 20,221 项通过（含新增绑定与扩展合同），Android lint 随 `check` 通过。
+- API 34 模拟器单台：同一测试 APK 的 `binding` 模式 29 项、`contracts` 52 项、`wrapper` 37 项、`protocol` 22 项通过。`binding` 模式包含 View 背景所有权、宿主替换后不覆盖、PRESERVE_HOST 内边距、Activity 内 attach/detach/reattach 与迟到结果、回退后的多边形像素。
+- 审查中发现并修复：`ensure` 在工厂执行后未复核槽位；环境 A→B→A 使旧结果重新有效（现以变更计数区分）；释放回调在不可重入段内执行；绝对内边距被恢复为相对内边距；一致性检查在工作线程失败时挂起或空指针，并对非捕获 lambda 误报。
+- 未验证：API 21/22/37、硬件窗口、RTL 布局；`docs/abi` 未重新生成；独立 consumer/provider fixture 仍固定旧候选，未覆盖新增 API。核心与 Android 字节已变化而版本仍为 `0.1.0-dev.4`，此前绑定到 dev.4 SHA-256 的证据不适用于当前源码，发布前须升版本并重新生成候选、ABI 与消费者证据。
+- 仍未实现：计划 C07 中的共享策略、outline/外扩/离屏声明；后台准备的调度器（`commit` 只负责校验与安装）；FillProvider、EffectProvider、BackendProvider；Compose、Meguviz、Lumen 适配。
