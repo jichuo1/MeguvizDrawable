@@ -8,12 +8,15 @@
 
 ## 制品一览
 
-| 制品 | 上游 | minSdk | 语言 | 进入 Central 包 |
+| 制品 | 上游 | minSdk | 语言 | 进入 Central 包（1.0.0） |
 |---|---|---|---|---|
 | `meguviz-drawable-compose` | Compose BOM 2026.09.00（运行时、ui、ui-graphics 解析为 1.12.1），Kotlin 2.4.21 | 23 | Kotlin | 是 |
 | `meguviz-drawable-meguviz-android` | `meguviz-android-runtime` 1.0.0 | 27 | Java | 是 |
 | `meguviz-drawable-meguviz-ui` | `meguviz-ui-core` 1.0.0 | 27 | Kotlin | 是 |
 | `meguviz-drawable-lumen` | `lumen-engine` 1.5.5（JitPack 坐标） | 27 | Java | 否 |
+
+Compose、MeguvizAndroid、MeguvizUI 三个桥只依赖已发布的 `meguviz-drawable-android:1.0.0`（Central 上），可以单独发布；
+上传前用 `-Pmeguviz.againstPublished=true` 针对已发布字节再构建并测试一次。
 
 Lumen 不进 Central 包：`lumen-engine` 只发布在 JitPack，Central 上的制品不应依赖 Central 用户无法解析的坐标
 （MeguvizUI 对它自己的 Lumen 桥采取同样的做法）。该桥仍可从本地 staging 仓库构建和使用，待 Lumen 上 Central 后再纳入。
@@ -78,6 +81,8 @@ Lumen 不进 Central 包：`lumen-engine` 只发布在 JitPack，Central 上的�
 
 所有权：登记通过 `BindingScope.claim(key)` 独占属性 key（该 API 为此新增，也可用于其他自管属性的所有者），
 与同 scope 的配方槽位或第二个登记互斥。共享会话不会被桥暂停或关闭，只有声明 `ownsSession` 才可以。
+
+`claim` 只存在于 core 1.0.1（未发布），所以 Lumen 桥显式依赖 `meguviz-drawable-core`；已发布的 core 1.0.0 没有它。
 
 没有复用 `lumen-controls` 或 `LiquidChoiceDrawable`：计划要求先读取实际解析的 AAR 的公开 API 并验证，
 当前解析到的 `lumen-engine`/`lumen-motion` 不含 controls 制品；BIL 本地副本的删除仍然受阻，本桥不改变这一点。

@@ -75,10 +75,10 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
 ## 1.0.0 候选与 Central 上传包，2026-10-28
 
 - 版本从 `0.1.0-dev.4` 改为 `1.0.0`（core、android、独立 consumer/provider fixture、辅助脚本）。`benchmark/page` 仍固定 `dev.3`，因为它记录的是该候选的历史基线。
-- staging 候选：core JAR SHA-256 `26d0eb75fb7ffe0e68449183c70920cb4a74de025e92bb30a15edd2327d5985a`；Android AAR SHA-256 `e9a74e017fcf0e46cee7593694aea639d316339a03b84a47d4e51baec6c4b0ac`。core 字节在加入桥接模块时因新增 `BindingScope.claim` 而变化（此前为 `6115921e…`），ABI、独立 consumer 与 provider 已按新字节重做；Android AAR 字节未变。
+- staging 候选（当时）：core JAR SHA-256 `6115921e7289196c084e2d82185a71f448716e75c0d9bfe42c1987e9fba53a37`；Android AAR SHA-256 `e9a74e017fcf0e46cee7593694aea639d316339a03b84a47d4e51baec6c4b0ac`。这两份随后被上传到 Maven Central 作为 1.0.0（2026-10-28 15:35 UTC），2026-10-29 核对：Central 上的 core jar 与 android aar 字节与此一致。
 - 独立 consumer：Gradle metadata 与 POM 两条解析路径的 `verifyCandidateResolution` 和 R8 `assembleRelease` 通过，解析字节与上述 SHA-256 一致。独立 provider：两条解析路径、R8 release 与 `assembleDebugAndroidTest` 通过。随后为该 fixture 补充了能力声明、命名回退、注册表派生与一致性检查的用例（新增第三方示例 `RangeLimitedCutProvider`、`RectangleProvider`）：`ProviderContract` 由 22 项增至 38 项，且仍只从 staging 的 1.0.0 字节解析；API 34 模拟器上 `ProviderInstrumentation` 通过，含回退后的像素检查。R8 黑盒模式的 MainActivity 未改动，未在设备上重跑。
 - ABI：`docs/abi/1.0.0/` 为新基线；与 `0.1.0-dev.4` 的 API 文本相比只有新增，没有删除或改签名。这只是文本比较，不是旧字节码不重编译运行的兼容证明。
-- Central 上传包：`gradlew -Pmeguviz.profile=bridges -Pmeguviz.sign=true centralBundle` 生成 `build/central/meguviz-drawable-1.0.0-central-bundle.zip`，包含 core、android、compose、meguviz-android、meguviz-ui 五个模块（lumen 不进 Central 包，见 BRIDGES.md）。`tools/verify_central_bundle.py` 逐项核对签名、校验和、POM 必填字段与文件齐全。已在 2026-10-29 于有人值守时生成：`build/central/meguviz-drawable-1.0.0-central-bundle.zip`（5 个模块、150 个文件，SHA-256 `a6903cd1bf1ff34c11011848174d1af429fb1e6933aa25f6c69ef5b5c75a7a57`），`verify_central_bundle.py` 通过（含 gpg 逐文件验签），其中的 jar/aar/sources/javadoc/POM/metadata 与上面逐字节一致的 staging 候选相同。签名每次构建都不同，所以该 SHA-256 只标识这一份包。签名密钥公钥已能在 keyserver.ubuntu.com 取到；命名空间 `io.github.jichuo1` 是否已在 Central Portal 验证，以及上传本身，都未在此验证。
+- Central 上传包：见下面“桥接模块”一节。core 与 android 的 1.0.0 已在 Central 上，不再进上传包；core 的新字节作为 1.0.1 单独记录。
 - 版本号 `1.0.0` 不改变 API 的实际成熟度：provider SPI 仍标为实验性，`README.md` 仍写 API provisional，G0–G6 门禁未通过，见 `STATUS.md`。
 
 ## 桥接模块，2026-10-29
@@ -96,3 +96,18 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
 - 可复现性：`.gitattributes` 把 `LICENSE`、`*.java`、`*.kt` 固定为 LF（它们被原样打进 `META-INF/LICENSE` 与 `-sources.jar`）。此后在本机工作树与全新 `git clone` 中分别构建，六个模块的全部制品（jar/aar、sources、javadoc、POM、Gradle metadata）逐字节一致；此前一次对照暴露了换行符与残留空目录造成的差异，已修正。
 - 独立 consumer 与 provider fixture 针对新 core 字节重新通过（两条解析路径、R8 release、`ProviderContract` 38 项）。
 - 未验证：API 23–33 上的桥、物理设备（本轮未连接）、R8 后的桥行为、独立 consumer 对桥制品的消费、Lumen 的其他版本。
+
+## 版本整理与 Central 上传包，2026-10-29
+
+- 发现：Central 上已有 core 与 android 的 1.0.0（此前上传），其中 core 是加入 `BindingScope.claim` 之前的字节。因此：core 版本改为 1.0.1
+  （当前字节 `26d0eb75fb7ffe0e68449183c70920cb4a74de025e92bb30a15edd2327d5985a`，仅比 1.0.0 多 `claim`），android 保持 1.0.0；独立 consumer 与 provider fixture
+  的 core 坐标随之改为 1.0.1 并重新通过；`tools/verify_candidate_licenses.py` 改为按模块读取各自版本。
+- ABI：`docs/abi/1.0.0/core-api.*` 现在取自 Central 上的 1.0.0 jar（SHA-256 与上面一致），`docs/abi/1.0.1/core-api.*` 取自当前字节；1.0.0 到 1.0.1 只有新增（`BindingScope.Claim` 与 `claim`），没有删除或改签名。
+- 本地 android 1.0.0 候选的 POM 因 core 变为 1.0.1 而与 Central 上的 android POM 不同，该候选不上传；aar 字节与 Central 一致。
+- 三个新桥（compose、meguviz-android、meguviz-ui）不使用 `claim`。针对 Central 上已发布的 android/core 1.0.0 构建（`-Pmeguviz.againstPublished=true`）：
+  `check`（含 lint）通过，`MeguvizBindingTest` 15 项通过，三个桥的设备合同在 API 34 模拟器上通过（Compose 89 项、MeguvizAndroid 17 项、MeguvizUI 58 项）。
+- 上传包 `build/central/meguviz-drawable-bridges-1.0.0-central-bundle.zip`：compose、meguviz-android、meguviz-ui 三个模块，90 个文件，
+  SHA-256 `18caba6dc2779cc9d2a18e663afd71f20ec2bd0d91d9a63b4273d3831f322b2a`。`verify_central_bundle.py --check-unpublished` 通过（含 gpg 验签；三个组件在 Central 上均不存在）；
+  POM 依赖都是已发布坐标：`meguviz-drawable-android:1.0.0`、`meguviz-android-runtime:1.0.0`、`meguviz-ui-core:1.0.0`，Compose 由 BOM 2026.09.00 管理。
+  命名空间 `io.github.jichuo1` 是否已在 Central Portal 验证，以及上传本身，都未在此验证。
+- 同一次核对还发现，原先的五模块包会被 Portal 拒绝（core、android 的 1.0.0 已存在），已删除；校验脚本新增 `--check-unpublished` 以便今后提前发现。

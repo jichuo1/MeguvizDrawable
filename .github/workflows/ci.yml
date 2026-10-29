@@ -76,6 +76,10 @@ jobs:
           log-accepted-android-sdk-licenses: false
       - name: Bridge modules build, lint and unit tests
         run: bash gradlew -Pmeguviz.profile=bridges --no-daemon check
+      - name: Central-bound bridges against the released base library
+        run: >-
+          bash gradlew -Pmeguviz.profile=bridges -Pmeguviz.againstPublished=true --no-daemon
+          :compose:check :meguviz-android:check :meguviz-ui:check
       - name: Bridge instrumentation APKs
         run: >-
           bash gradlew -Pmeguviz.profile=bridges --no-daemon
