@@ -107,7 +107,7 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
 - 三个新桥（compose、meguviz-android、meguviz-ui）不使用 `claim`。针对 Central 上已发布的 android/core 1.0.0 构建（`-Pmeguviz.againstPublished=true`）：
   `check`（含 lint）通过，`MeguvizBindingTest` 15 项通过，三个桥的设备合同在 API 34 模拟器上通过（Compose 89 项、MeguvizAndroid 17 项、MeguvizUI 58 项）。
 - 上传包 `build/central/meguviz-drawable-bridges-1.0.0-central-bundle.zip`：compose、meguviz-android、meguviz-ui 三个模块，90 个文件，
-  SHA-256 `18caba6dc2779cc9d2a18e663afd71f20ec2bd0d91d9a63b4273d3831f322b2a`。`verify_central_bundle.py --check-unpublished` 通过（含 gpg 验签；三个组件在 Central 上均不存在）；
+  SHA-256 `fd926fcdc806215184de2175be31fc2311bf583b3cecd6611898de22c359cfd4`。`verify_central_bundle.py --check-unpublished` 通过（含 gpg 验签；三个组件在 Central 上均不存在）；
   POM 依赖都是已发布坐标：`meguviz-drawable-android:1.0.0`、`meguviz-android-runtime:1.0.0`、`meguviz-ui-core:1.0.0`，Compose 由 BOM 2026.09.00 管理。
   命名空间 `io.github.jichuo1` 是否已在 Central Portal 验证，以及上传本身，都未在此验证。
 - 同一次核对还发现，原先的五模块包会被 Portal 拒绝（core、android 的 1.0.0 已存在），已删除；校验脚本新增 `--check-unpublished` 以便今后提前发现。

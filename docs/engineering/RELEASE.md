@@ -25,6 +25,8 @@ python tools/verify_central_bundle.py build/central/meguviz-drawable-bridges-<�
 
 - `-Pmeguviz.againstPublished=true` 让三个桥针对 Central 上已发布的基础库构建，而不是工作树里的 `:android`/`:core`，
   这样它们不可能用到尚未发布的 API；`centralBundle` 在缺少该参数时拒绝运行。同样的参数也可用于 `check`，在上传前先跑一遍单测与 lint。
+- Gradle 在制品字节没变时会复用上次已签好的 `.asc`（签名任务 UP-TO-DATE），此时不会弹出口令窗口。需要重新签名时：
+  `gradlew … :compose:signCandidatePublication --rerun :meguviz-android:signCandidatePublication --rerun :meguviz-ui:signCandidatePublication --rerun centralBundle`（并先 `gpgconf --kill gpg-agent` 清掉口令缓存）。
 - 不带 `-Pmeguviz.sign=true` 时 `centralBundle` 也会拒绝运行，避免产出无签名的包。
 - 产物为 Maven 仓库布局的 zip；每个文件带 `.asc` 与 `.md5/.sha1/.sha256/.sha512`，包含 sources 与 javadoc jar。`maven-metadata.xml` 被有意排除，由 Portal 生成。
 - 校验脚本检查签名、校验和、POM 必填字段与文件齐全；`--check-unpublished` 逐个组件向 Central 查询，若版本已存在就失败。
