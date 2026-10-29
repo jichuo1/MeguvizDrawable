@@ -17,11 +17,14 @@ tasks.named("check") {
     dependsOn(provider { subprojects.map { "${it.path}:check" } })
 }
 
-// Central Portal upload bundle: ./gradlew -Pmeguviz.profile=bridges -Pmeguviz.sign=true centralBundle
+// Central Portal upload bundle.
 // The zip is a Maven repository layout of the Central-ready modules with signatures and checksums.
+// Run: gradlew -Pmeguviz.profile=bridges -Pmeguviz.sign=true -Pmeguviz.againstPublished=true centralBundle
 // :lumen is deliberately absent: lumen-engine is published only through JitPack, and a Central
 // artifact must not depend on one that Central consumers cannot resolve.
-val centralModules = listOf(":core", ":android", ":compose", ":meguviz-android", ":meguviz-ui")
+// :core and :android are absent too: 1.0.0 of both is already on Central and a release cannot be
+// replaced. Their working-tree code moves on as core 1.0.1.
+val centralModules = listOf(":compose", ":meguviz-android", ":meguviz-ui")
 
 val cleanCentralMaven = tasks.register<Delete>("cleanCentralMaven") {
     delete(layout.buildDirectory.dir("central-maven"))
@@ -38,8 +41,11 @@ tasks.register<Zip>("centralBundle") {
     }
     doFirst {
         check(providers.gradleProperty("meguviz.sign").orNull == "true") { "centralBundle requires -Pmeguviz.sign=true" }
+        check(providers.gradleProperty("meguviz.againstPublished").orNull == "true") {
+            "centralBundle requires -Pmeguviz.againstPublished=true so the bridges are built against the released base library"
+        }
     }
     from(layout.buildDirectory.dir("central-maven")) { exclude("**/maven-metadata.xml*") }
     destinationDirectory.set(layout.buildDirectory.dir("central"))
-    archiveFileName.set("meguviz-drawable-${project(":core").version}-central-bundle.zip")
+    archiveFileName.set("meguviz-drawable-bridges-${project(":compose").version}-central-bundle.zip")
 }

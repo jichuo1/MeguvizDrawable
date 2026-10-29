@@ -1,12 +1,12 @@
 {
-  "api_sha256": "38427e74ed9df665adddbe706d7ffb4580473919ebde33c53aa83569a3538f4c",
+  "api_sha256": "842142104572d94928ba4e1cca53743b8947becc0b51cb330f0745e525c00484",
   "artifact": "meguviz-drawable-core-1.0.0.jar",
-  "artifact_sha256": "26d0eb75fb7ffe0e68449183c70920cb4a74de025e92bb30a15edd2327d5985a",
-  "classes": 40,
+  "artifact_sha256": "6115921e7289196c084e2d82185a71f448716e75c0d9bfe42c1987e9fba53a37",
+  "classes": 39,
   "embedded_jars": [
     {
       "name": "artifact.jar",
-      "sha256": "26d0eb75fb7ffe0e68449183c70920cb4a74de025e92bb30a15edd2327d5985a"
+      "sha256": "6115921e7289196c084e2d82185a71f448716e75c0d9bfe42c1987e9fba53a37"
     }
   ],
   "javap_version": "17.0.20.1",

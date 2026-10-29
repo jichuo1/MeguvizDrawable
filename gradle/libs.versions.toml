@@ -4,6 +4,8 @@ compose-bom = "2026.09.00"
 androidx-activity = "1.12.4"
 lumen = "1.5.5"
 junit = "4.13.2"
+# The base library as released on Maven Central; Central-bound bridges are built against it.
+drawable-android-released = "1.0.0"
 meguviz-android = "1.0.0"
 meguviz-ui = "1.0.0"
 
@@ -15,6 +17,7 @@ compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
 junit = { module = "junit:junit", version.ref = "junit" }
+drawable-android-released = { module = "io.github.jichuo1.meguviz:meguviz-drawable-android", version.ref = "drawable-android-released" }
 lumen-engine = { module = "com.github.jichuo1.LumenCoacervationEngine:lumen-engine", version.ref = "lumen" }
 meguviz-android-runtime = { module = "io.github.jichuo1.meguviz:meguviz-android-runtime", version.ref = "meguviz-android" }
 meguviz-ui-core = { module = "io.github.jichuo1.meguviz:meguviz-ui-core", version.ref = "meguviz-ui" }

@@ -57,7 +57,7 @@ tasks.register("verifyCandidateResolution") {
             }
         }
         check(providers == 1 && modules == setOf(
-            "io.github.jichuo1.meguviz:meguviz-drawable-core:1.0.0",
+            "io.github.jichuo1.meguviz:meguviz-drawable-core:1.0.1",
             "io.github.jichuo1.meguviz:meguviz-drawable-android:1.0.0"
         ) && artifacts.size == 3) { "Unexpected provider dependency graph: $modules, providers=$providers" }
     }

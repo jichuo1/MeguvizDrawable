@@ -31,7 +31,13 @@ kotlin {
 }
 
 dependencies {
-    api(project(":android"))
+    // -Pmeguviz.againstPublished=true builds against the base library as released on Maven Central,
+    // so a bridge cannot use API that exists only in this working tree (required for the Central bundle).
+    if (providers.gradleProperty("meguviz.againstPublished").orNull == "true") {
+        api(libs.drawable.android.released)
+    } else {
+        api(project(":android"))
+    }
     implementation(platform(libs.compose.bom))
     api(libs.compose.runtime)
     api(libs.compose.ui.graphics)
