@@ -1,0 +1,296 @@
+# io.github.jichuo1.meguviz.drawable.android.BitmapWeigher (public)
+public final class io.github.jichuo1.meguviz.drawable.android.BitmapWeigher implements io.github.jichuo1.meguviz.drawable.cache.FlightCache$Weigher<android.graphics.Bitmap> {
+  public static final io.github.jichuo1.meguviz.drawable.android.BitmapWeigher INSTANCE;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/android/BitmapWeigher;
+  public long weigh(android.graphics.Bitmap);
+    descriptor: (Landroid/graphics/Bitmap;)J
+
+  public long weigh(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)J
+}
+
+# io.github.jichuo1.meguviz.drawable.android.ExperimentalPolygonDrawable (public)
+public final class io.github.jichuo1.meguviz.drawable.android.ExperimentalPolygonDrawable extends android.graphics.drawable.Drawable {
+  public static io.github.jichuo1.meguviz.drawable.spi.ShapeProviderRegistry$Builder registryBuilder(int, int);
+    descriptor: (II)Lio/github/jichuo1/meguviz/drawable/spi/ShapeProviderRegistry$Builder;
+
+  public io.github.jichuo1.meguviz.drawable.android.ExperimentalPolygonDrawable(io.github.jichuo1.meguviz.drawable.spi.ShapePlanView, int);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/spi/ShapePlanView;I)V
+
+  protected void onBoundsChange(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)V
+
+  public void draw(android.graphics.Canvas);
+    descriptor: (Landroid/graphics/Canvas;)V
+
+  public void setAlpha(int);
+    descriptor: (I)V
+
+  public int getAlpha();
+    descriptor: ()I
+
+  public void setColorFilter(android.graphics.ColorFilter);
+    descriptor: (Landroid/graphics/ColorFilter;)V
+
+  public android.graphics.ColorFilter getColorFilter();
+    descriptor: ()Landroid/graphics/ColorFilter;
+
+  public void setTint(int);
+    descriptor: (I)V
+
+  public void setTintList(android.content.res.ColorStateList);
+    descriptor: (Landroid/content/res/ColorStateList;)V
+
+  public void setTintMode(android.graphics.PorterDuff$Mode);
+    descriptor: (Landroid/graphics/PorterDuff$Mode;)V
+
+  public int getOpacity();
+    descriptor: ()I
+
+  public void getOutline(android.graphics.Outline);
+    descriptor: (Landroid/graphics/Outline;)V
+}
+
+# io.github.jichuo1.meguviz.drawable.android.MainThreadPoster (public)
+public final class io.github.jichuo1.meguviz.drawable.android.MainThreadPoster implements io.github.jichuo1.meguviz.drawable.cache.FlightCache$OwnerPoster {
+  public io.github.jichuo1.meguviz.drawable.android.MainThreadPoster();
+    descriptor: ()V
+
+  public boolean post(java.lang.Runnable);
+    descriptor: (Ljava/lang/Runnable;)Z
+}
+
+# io.github.jichuo1.meguviz.drawable.android.OwnedDrawableWrapper (public)
+public final class io.github.jichuo1.meguviz.drawable.android.OwnedDrawableWrapper extends android.graphics.drawable.Drawable implements android.graphics.drawable.Drawable$Callback,java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.drawable.android.OwnedDrawableWrapper();
+    descriptor: ()V
+
+  public io.github.jichuo1.meguviz.drawable.android.OwnedDrawableWrapper(android.graphics.drawable.Drawable);
+    descriptor: (Landroid/graphics/drawable/Drawable;)V
+
+  public void replaceChild(android.graphics.drawable.Drawable);
+    descriptor: (Landroid/graphics/drawable/Drawable;)V
+
+  public void draw(android.graphics.Canvas);
+    descriptor: (Landroid/graphics/Canvas;)V
+
+  protected void onBoundsChange(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)V
+
+  public boolean setState(int[]);
+    descriptor: ([I)Z
+
+  public int[] getState();
+    descriptor: ()[I
+
+  protected boolean onStateChange(int[]);
+    descriptor: ([I)Z
+
+  protected boolean onLevelChange(int);
+    descriptor: (I)Z
+
+  public boolean isStateful();
+    descriptor: ()Z
+
+  public boolean setVisible(boolean, boolean);
+    descriptor: (ZZ)Z
+
+  public void jumpToCurrentState();
+    descriptor: ()V
+
+  public void setHotspot(float, float);
+    descriptor: (FF)V
+
+  public void setHotspotBounds(int, int, int, int);
+    descriptor: (IIII)V
+
+  public void getHotspotBounds(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)V
+
+  public boolean onLayoutDirectionChanged(int);
+    descriptor: (I)Z
+
+  public void setAutoMirrored(boolean);
+    descriptor: (Z)V
+
+  public boolean isAutoMirrored();
+    descriptor: ()Z
+
+  public void setAlpha(int);
+    descriptor: (I)V
+
+  public int getAlpha();
+    descriptor: ()I
+
+  public void setColorFilter(android.graphics.ColorFilter);
+    descriptor: (Landroid/graphics/ColorFilter;)V
+
+  public android.graphics.ColorFilter getColorFilter();
+    descriptor: ()Landroid/graphics/ColorFilter;
+
+  public void setTint(int);
+    descriptor: (I)V
+
+  public void setTintList(android.content.res.ColorStateList);
+    descriptor: (Landroid/content/res/ColorStateList;)V
+
+  public void setTintMode(android.graphics.PorterDuff$Mode);
+    descriptor: (Landroid/graphics/PorterDuff$Mode;)V
+
+  public int getOpacity();
+    descriptor: ()I
+
+  public int getIntrinsicWidth();
+    descriptor: ()I
+
+  public int getIntrinsicHeight();
+    descriptor: ()I
+
+  public int getMinimumWidth();
+    descriptor: ()I
+
+  public int getMinimumHeight();
+    descriptor: ()I
+
+  public boolean getPadding(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)Z
+
+  public void getOutline(android.graphics.Outline);
+    descriptor: (Landroid/graphics/Outline;)V
+
+  public android.graphics.drawable.Drawable$ConstantState getConstantState();
+    descriptor: ()Landroid/graphics/drawable/Drawable$ConstantState;
+
+  public android.graphics.drawable.Drawable mutate();
+    descriptor: ()Landroid/graphics/drawable/Drawable;
+
+  public void invalidateDrawable(android.graphics.drawable.Drawable);
+    descriptor: (Landroid/graphics/drawable/Drawable;)V
+
+  public void scheduleDrawable(android.graphics.drawable.Drawable, java.lang.Runnable, long);
+    descriptor: (Landroid/graphics/drawable/Drawable;Ljava/lang/Runnable;J)V
+
+  public void unscheduleDrawable(android.graphics.drawable.Drawable, java.lang.Runnable);
+    descriptor: (Landroid/graphics/drawable/Drawable;Ljava/lang/Runnable;)V
+
+  public void close();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.android.RecipeDrawable (public)
+public final class io.github.jichuo1.meguviz.drawable.android.RecipeDrawable extends android.graphics.drawable.Drawable {
+  public io.github.jichuo1.meguviz.drawable.android.RecipeDrawable(io.github.jichuo1.meguviz.drawable.model.DrawingRecipe, float);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/model/DrawingRecipe;F)V
+
+  public io.github.jichuo1.meguviz.drawable.model.DrawingRecipe recipe();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/model/DrawingRecipe;
+
+  public void draw(android.graphics.Canvas);
+    descriptor: (Landroid/graphics/Canvas;)V
+
+  protected void onBoundsChange(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)V
+
+  public void setAlpha(int);
+    descriptor: (I)V
+
+  public int getAlpha();
+    descriptor: ()I
+
+  public void setColorFilter(android.graphics.ColorFilter);
+    descriptor: (Landroid/graphics/ColorFilter;)V
+
+  public android.graphics.ColorFilter getColorFilter();
+    descriptor: ()Landroid/graphics/ColorFilter;
+
+  public void setTintList(android.content.res.ColorStateList);
+    descriptor: (Landroid/content/res/ColorStateList;)V
+
+  public void setTint(int);
+    descriptor: (I)V
+
+  public void setTintMode(android.graphics.PorterDuff$Mode);
+    descriptor: (Landroid/graphics/PorterDuff$Mode;)V
+
+  public boolean isStateful();
+    descriptor: ()Z
+
+  public boolean setState(int[]);
+    descriptor: ([I)Z
+
+  public int[] getState();
+    descriptor: ()[I
+
+  protected boolean onStateChange(int[]);
+    descriptor: ([I)Z
+
+  public int getOpacity();
+    descriptor: ()I
+
+  public android.graphics.drawable.Drawable$ConstantState getConstantState();
+    descriptor: ()Landroid/graphics/drawable/Drawable$ConstantState;
+
+  public android.graphics.drawable.Drawable mutate();
+    descriptor: ()Landroid/graphics/drawable/Drawable;
+
+  public int getIntrinsicWidth();
+    descriptor: ()I
+
+  public int getIntrinsicHeight();
+    descriptor: ()I
+
+  public int getMinimumWidth();
+    descriptor: ()I
+
+  public int getMinimumHeight();
+    descriptor: ()I
+
+  public boolean getPadding(android.graphics.Rect);
+    descriptor: (Landroid/graphics/Rect;)Z
+
+  public void getOutline(android.graphics.Outline);
+    descriptor: (Landroid/graphics/Outline;)V
+}
+
+# io.github.jichuo1.meguviz.drawable.android.ViewLifecycleBinder (public)
+public final class io.github.jichuo1.meguviz.drawable.android.ViewLifecycleBinder implements android.view.View$OnAttachStateChangeListener,io.github.jichuo1.meguviz.drawable.binding.BindingScope$Releasable {
+  public static io.github.jichuo1.meguviz.drawable.android.ViewLifecycleBinder attach(android.view.View, io.github.jichuo1.meguviz.drawable.binding.BindingScope, io.github.jichuo1.meguviz.drawable.android.ViewLifecycleBinder$EnvironmentSource);
+    descriptor: (Landroid/view/View;Lio/github/jichuo1/meguviz/drawable/binding/BindingScope;Lio/github/jichuo1/meguviz/drawable/android/ViewLifecycleBinder$EnvironmentSource;)Lio/github/jichuo1/meguviz/drawable/android/ViewLifecycleBinder;
+
+  public void onViewAttachedToWindow(android.view.View);
+    descriptor: (Landroid/view/View;)V
+
+  public void onViewDetachedFromWindow(android.view.View);
+    descriptor: (Landroid/view/View;)V
+
+  public void release();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.android.ViewLifecycleBinder$EnvironmentSource (public)
+public interface io.github.jichuo1.meguviz.drawable.android.ViewLifecycleBinder$EnvironmentSource {
+  public abstract io.github.jichuo1.meguviz.drawable.binding.BindingEnvironment current();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/binding/BindingEnvironment;
+}
+
+# io.github.jichuo1.meguviz.drawable.android.ViewSlots (public)
+public final class io.github.jichuo1.meguviz.drawable.android.ViewSlots {
+  public static io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Slot<android.graphics.drawable.Drawable> background(android.view.View, io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy);
+    descriptor: (Landroid/view/View;Lio/github/jichuo1/meguviz/drawable/android/ViewSlots$PaddingPolicy;)Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding$Slot;
+
+  public static io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Slot<android.graphics.drawable.Drawable> foreground(android.view.View);
+    descriptor: (Landroid/view/View;)Lio/github/jichuo1/meguviz/drawable/binding/SlotBinding$Slot;
+}
+
+# io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy (public)
+public final class io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy> {
+  public static final io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy PRESERVE_HOST;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/android/ViewSlots$PaddingPolicy;
+  public static final io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy ADOPT_DRAWABLE;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/android/ViewSlots$PaddingPolicy;
+  public static io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/android/ViewSlots$PaddingPolicy;
+
+  public static io.github.jichuo1.meguviz.drawable.android.ViewSlots$PaddingPolicy valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/android/ViewSlots$PaddingPolicy;
+}

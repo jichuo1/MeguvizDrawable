@@ -4,7 +4,7 @@ plugins {
     signing
 }
 
-version = "1.0.1"
+version = "1.1.0"
 description = "Immutable drawing recipes, state compilation and slot ownership for Android drawables (pure Java core)."
 
 java {

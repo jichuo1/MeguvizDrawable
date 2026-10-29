@@ -82,7 +82,7 @@ Lumen 不进 Central 包：`lumen-engine` 只发布在 JitPack，Central 上的�
 所有权：登记通过 `BindingScope.claim(key)` 独占属性 key（该 API 为此新增，也可用于其他自管属性的所有者），
 与同 scope 的配方槽位或第二个登记互斥。共享会话不会被桥暂停或关闭，只有声明 `ownsSession` 才可以。
 
-`claim` 只存在于 core 1.0.1（未发布），所以 Lumen 桥显式依赖 `meguviz-drawable-core`；已发布的 core 1.0.0 没有它。
+`claim` 只存在于 core 1.1.0（未发布），所以 Lumen 桥显式依赖 `meguviz-drawable-core`；已发布的 core 1.0.0 没有它。
 
 没有复用 `lumen-controls` 或 `LiquidChoiceDrawable`：计划要求先读取实际解析的 AAR 的公开 API 并验证，
 当前解析到的 `lumen-engine`/`lumen-motion` 不含 controls 制品；BIL 本地副本的删除仍然受阻，本桥不改变这一点。

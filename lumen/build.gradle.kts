@@ -26,7 +26,7 @@ android {
 
 dependencies {
     api(project(":android"))
-    // BindingScope.claim exists from core 1.0.1; android 1.0.0 alone would resolve core 1.0.0 without it.
+    // BindingScope.claim exists from core 1.1.0; the released android 1.0.0 alone would resolve core 1.0.0 without it.
     api(project(":core"))
     api(libs.lumen.engine)
     testImplementation(libs.junit)

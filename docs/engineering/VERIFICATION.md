@@ -111,3 +111,17 @@ dev.3 core JAR SHA-256 `51b17b45e0397b5b322b1382bb73e42bb7e7a91199e538eb79e31031
   POM 依赖都是已发布坐标：`meguviz-drawable-android:1.0.0`、`meguviz-android-runtime:1.0.0`、`meguviz-ui-core:1.0.0`，Compose 由 BOM 2026.09.00 管理。
   命名空间 `io.github.jichuo1` 是否已在 Central Portal 验证，以及上传本身，都未在此验证。
 - 同一次核对还发现，原先的五模块包会被 Portal 拒绝（core、android 的 1.0.0 已存在），已删除；校验脚本新增 `--check-unpublished` 以便今后提前发现。
+
+## FlightCache 与 1.1.0，2026-10-29
+
+配合 BIL 性能报告 P1-03（共享生成、非阻塞冷未命中），新增 `FlightCache`（core）与 `MainThreadPoster`、`BitmapWeigher`（android），说明与接入方式见 [FLIGHT_CACHE.md](FLIGHT_CACHE.md)。
+
+- 版本：上面提到的 core 1.0.1 从未发布，已被取代。core 与 android 都只新增 API，按语义化版本升到 **1.1.0**（均未发布）；Central 上的 1.0.0 不变。
+  `docs/abi/1.0.1/` 作废删除，新增 `docs/abi/1.1.0/`；相对 Central 上的 1.0.0，core 与 android 的 API 文本都没有删除或改签名。独立 consumer 与 provider fixture 的坐标随之改为 1.1.0。
+- 宿主 JVM：`CoreContractTest` 20,366 项（其中 `FlightCacheContractTest` 覆盖并发合并、取消与复活、代际、失败、上限、淘汰、`computeNow`、`close`、执行器与投递拒绝、`abandonRunning`、线程池队列移除、
+  8 线程 × 20 轮竞争只生产一次、4 线程随机负载下三个上限从不被突破）。连续重跑 5 次稳定；两处关键逻辑（同键合并、取消后不投递）的变异都使合同失败，已还原。
+- API 34 模拟器（单台）：`cache` 模式 14 项（真实线程池、主 Looper、Bitmap tile：两个 Scene 共用一次生产且在主线程回调；取消与过期订阅者不被调用；字节上限按分配字节淘汰）；基础库 52 项合同与 29 项绑定合同仍通过。
+- 所有档位的 `check`、针对已发布 android 1.0.0 构建的三个桥的 `check`、独立 consumer 与 provider（两条解析路径、R8、`ProviderContract` 38 项）通过。
+- 已签名的 Central 上传包（三个桥）不受影响：用当前代码重新构建这三个模块，15 个载荷文件与包中的逐字节一致，`--check-unpublished` 仍通过。
+- 评审中发现并修复：执行器拒绝任务时已加入的订阅者没有回调；被通知停止的运行中飞行仍可被新请求加入；`Flight.task` 的跨线程可见性。已知并记录的限制：`abandonRunning` 下被替换的运行中飞行可短暂超出飞行上限。
+- 未验证：真机与硬件 Canvas 路径；BIL 实际替换后的帧耗时（属 BIL 侧测量）。

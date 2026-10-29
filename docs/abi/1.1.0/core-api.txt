@@ -236,6 +236,185 @@ public interface io.github.jichuo1.meguviz.drawable.binding.SlotBinding$Slot<T> 
     descriptor: (Ljava/lang/Object;)V
 }
 
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache (public)
+public final class io.github.jichuo1.meguviz.drawable.cache.FlightCache<K, V> implements java.lang.AutoCloseable {
+  public static <K, V> io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> builder(java.util.concurrent.Executor, io.github.jichuo1.meguviz.drawable.cache.FlightCache$OwnerPoster);
+    descriptor: (Ljava/util/concurrent/Executor;Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$OwnerPoster;)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Builder;
+
+  public V peek(K);
+    descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Ticket<V> request(K, io.github.jichuo1.meguviz.drawable.cache.FlightCache$Producer<K, V>, io.github.jichuo1.meguviz.drawable.cache.FlightCache$Subscriber<V>);
+    descriptor: (Ljava/lang/Object;Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Producer;Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Subscriber;)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Ticket;
+
+  public V computeNow(K, io.github.jichuo1.meguviz.drawable.cache.FlightCache$Producer<K, V>) throws java.lang.Exception;
+    descriptor: (Ljava/lang/Object;Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Producer;)Ljava/lang/Object;
+
+  public long version();
+    descriptor: ()J
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Stats stats();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Stats;
+
+  public boolean isClosed();
+    descriptor: ()Z
+
+  public void close();
+    descriptor: ()V
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder (public)
+public final class io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> {
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> maxEntries(int);
+    descriptor: (I)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Builder;
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> maxWeight(long);
+    descriptor: (J)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Builder;
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> maxFlights(int);
+    descriptor: (I)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Builder;
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> weigher(io.github.jichuo1.meguviz.drawable.cache.FlightCache$Weigher<V>);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Weigher;)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Builder;
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> evictionListener(io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionListener<K, V>);
+    descriptor: (Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$EvictionListener;)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Builder;
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Builder<K, V> abandonRunning(boolean);
+    descriptor: (Z)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Builder;
+
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache<K, V> build();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/cache/FlightCache;
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Cancellation (public)
+public interface io.github.jichuo1.meguviz.drawable.cache.FlightCache$Cancellation {
+  public abstract boolean isCancelled();
+    descriptor: ()Z
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionListener (public)
+public interface io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionListener<K, V> {
+  public abstract void onEvicted(K, V, io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason);
+    descriptor: (Ljava/lang/Object;Ljava/lang/Object;Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$EvictionReason;)V
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason (public)
+public final class io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason> {
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason CAPACITY;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$EvictionReason;
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason REPLACED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$EvictionReason;
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason CLOSED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$EvictionReason;
+  public static io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$EvictionReason;
+
+  public static io.github.jichuo1.meguviz.drawable.cache.FlightCache$EvictionReason valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$EvictionReason;
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$OwnerPoster (public)
+public interface io.github.jichuo1.meguviz.drawable.cache.FlightCache$OwnerPoster {
+  public abstract boolean post(java.lang.Runnable);
+    descriptor: (Ljava/lang/Runnable;)Z
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Producer (public)
+public interface io.github.jichuo1.meguviz.drawable.cache.FlightCache$Producer<K, V> {
+  public abstract V produce(K, io.github.jichuo1.meguviz.drawable.cache.FlightCache$Cancellation) throws java.lang.Exception;
+    descriptor: (Ljava/lang/Object;Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Cancellation;)Ljava/lang/Object;
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Stats (public)
+public final class io.github.jichuo1.meguviz.drawable.cache.FlightCache$Stats {
+  public final long hits;
+    descriptor: J
+  public final long misses;
+    descriptor: J
+  public final long joins;
+    descriptor: J
+  public final long flightsStarted;
+    descriptor: J
+  public final long produced;
+    descriptor: J
+  public final long failures;
+    descriptor: J
+  public final long evictions;
+    descriptor: J
+  public final long rejectedCapacity;
+    descriptor: J
+  public final long abandonedDropped;
+    descriptor: J
+  public final long cancelledSubscribers;
+    descriptor: J
+  public final long delivered;
+    descriptor: J
+  public final long droppedStale;
+    descriptor: J
+  public final long listenerFailures;
+    descriptor: J
+  public final long version;
+    descriptor: J
+  public final int entries;
+    descriptor: I
+  public final int flights;
+    descriptor: I
+  public final long weight;
+    descriptor: J
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status (public)
+public final class io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status extends java.lang.Enum<io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status> {
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status READY;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status JOINED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status STARTED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status REJECTED_CAPACITY;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+  public static final io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status REJECTED_CLOSED;
+    descriptor: Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+  public static io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status[] values();
+    descriptor: ()[Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+
+  public static io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Subscriber (public)
+public interface io.github.jichuo1.meguviz.drawable.cache.FlightCache$Subscriber<V> {
+  public abstract boolean isCurrent();
+    descriptor: ()Z
+
+  public abstract void onReady(V);
+    descriptor: (Ljava/lang/Object;)V
+
+  public abstract void onFailed(java.lang.Throwable);
+    descriptor: (Ljava/lang/Throwable;)V
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Ticket (public)
+public final class io.github.jichuo1.meguviz.drawable.cache.FlightCache$Ticket<V> {
+  public io.github.jichuo1.meguviz.drawable.cache.FlightCache$Status status();
+    descriptor: ()Lio/github/jichuo1/meguviz/drawable/cache/FlightCache$Status;
+
+  public V value();
+    descriptor: ()Ljava/lang/Object;
+
+  public boolean cancel();
+    descriptor: ()Z
+}
+
+# io.github.jichuo1.meguviz.drawable.cache.FlightCache$Weigher (public)
+public interface io.github.jichuo1.meguviz.drawable.cache.FlightCache$Weigher<V> {
+  public abstract long weigh(V);
+    descriptor: (Ljava/lang/Object;)J
+}
+
 # io.github.jichuo1.meguviz.drawable.core.CornerRadii (public)
 public final class io.github.jichuo1.meguviz.drawable.core.CornerRadii {
   public static float[] normalize(float, float, float[]);
