@@ -10,13 +10,14 @@ import java.util.Random;
 public final class CoreContractTest {
     private static int checks;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         immutabilityAndOrdering();
         stateCorpus();
         geometry();
         checks += CoreAdditionalContractTest.run();
         checks += BindingContractTest.run();
         checks += ProviderExtensionContractTest.run();
+        checks += FlightCacheContractTest.run();
         System.out.println("CoreContractTest: " + checks + " checks passed");
     }
 
